@@ -1,0 +1,33 @@
+import { Router } from "express"
+
+import {
+
+    getAllProducts, 
+    findSearchedProducts, 
+    crearNuevo,
+    sumarDia,
+    revisado,
+    eliminarProducto,
+    editarProducto
+
+} from "../controllers/products.controller.js"
+
+
+
+export const productsRouter = Router()
+
+
+
+
+productsRouter.get('/allProducts',getAllProducts)
+productsRouter.get('/find/:searched',findSearchedProducts)
+
+productsRouter.post("/new",crearNuevo)
+
+productsRouter.put('/sumarDia',sumarDia)
+productsRouter.put('/revisado',revisado)
+productsRouter.put('/eliminarProducto',eliminarProducto)
+
+
+productsRouter.put('/editarProducto',editarProducto)
+
