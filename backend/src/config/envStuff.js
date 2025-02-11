@@ -8,10 +8,7 @@ console.log(absolutePath)
 dotenv.config({path: absolutePath});
 
 export const {MONGO_CLUSTER_URI,TEST,DB_PASSWORD,DB_NAME,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-    AWS_REGION,
-    AWS_BUCKET_NAME
+
 } = process.env
 console.log(process.env.MONGO_CLUSTER_URI)
 
