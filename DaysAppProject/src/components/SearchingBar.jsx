@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { MdContentPasteSearch } from "react-icons/md";
 
 import PropTypes from "prop-types";
@@ -6,17 +6,9 @@ import PropTypes from "prop-types";
 
 
 
-export default function SearchingBar({searched,SetSearched}){
+export default function SearchingBar({SetSearched}){
     
 
-
-
-    useEffect(()=>{
-       
-       console.log(searched)
-       
-
-    },[searched])
 
     return(
         <Fragment>

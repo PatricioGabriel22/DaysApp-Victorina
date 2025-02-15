@@ -44,7 +44,10 @@ export const crearNuevo = async (req,res)=>{
     let flagRes = false
     
     const {productName,fechaInicio,cantidad,unidades} = req.body
-    console.log(req.body) 
+
+     if(!productName || !fechaInicio || !cantidad || !unidades){
+        return res.send({message:"Faltan datos"})
+     }
 
     const ahora = new Date()
 

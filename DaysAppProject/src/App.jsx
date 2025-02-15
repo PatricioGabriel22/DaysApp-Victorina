@@ -100,18 +100,18 @@ function App() {
     e.preventDefault()
     // console.log(e.target[0].value.toLowerCase())
 
-    
-    const [anio,mes,dia] = e.target[3].value.split('-')
+    console.log(e.target[4].value)
+  
+    const nombreDelProducto = e.target[0].value !== ""? e.target[0].value: e.target[1].value
+    const [anio,mes,dia] = e.target[4].value.split('-')
     // console.log(dia,mes,anio)
-
-    console.log(e)
 
 
     await axios.post(`${serverUrl}/new`,{
-      "productName":e.target[0].value.toLowerCase(),
+      "productName":nombreDelProducto.toLowerCase(),
       "fechaInicio":`${dia}/${mes}/${anio}`,
-      "cantidad":e.target[1].value,
-      "unidades":e.target[2].value
+      "cantidad":e.target[2].value,
+      "unidades":e.target[3].value
     }).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
