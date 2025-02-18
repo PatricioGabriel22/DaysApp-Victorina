@@ -45,14 +45,17 @@ function App(){
 
     <Router>
 
-      <nav className="self-start flex flex-col fixed items-center bg-orange-600 min-h-screen sm:min-w-screen">
+      <nav className="self-start flex flex-col fixed  bg-orange-600 md:min-h-screen sm:min-w-screen">
 
         {menu ? (
-          <div >
+          <div className="min-h-screen flex flex-col justify-evenly mt-7">
             <RxCross1 size={20} className="m-4 w-full" onClick={()=>(setMenu(!menu))}/>
 
-            <Link to="/" className=" flex items-center p-4 hover:bg-black "><CiClock1 size={50}/>Days App</Link>
-            <Link to="/produccion-diaria" className=" flex items-center p-2 hover:bg-black "><GiCook size={50}/>Produccion</Link>
+            <div className="flex flex-col items-center flex-grow gap-20">
+              <Link to="/" className="  flex items-center p-4 hover:bg-black w-full mt-7"><CiClock1 size={50}/>Days App</Link>
+              <Link to="/produccion-diaria" className=" flex items-center p-4 hover:bg-black "><GiCook size={50}/>Produccion</Link>
+
+            </div>
           </div>
             ):
             (<AiOutlineMenu size={50}   onClick={()=>(setMenu(!menu))}/>)}
