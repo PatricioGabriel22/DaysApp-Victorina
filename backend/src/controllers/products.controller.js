@@ -40,34 +40,48 @@ export const findSearchedProducts = async(req,res)=>{
     }
 }
 
+
+
 export const crearNuevo = async (req,res)=>{
     let flagRes = false
     
     const {productName,fechaInicio,cantidad,unidades} = req.body
 
-     if(!productName || !fechaInicio || !cantidad || !unidades){
-        return res.send({message:"Faltan datos"})
-     }
+    if(!productName || !cantidad || !unidades){
+        return res.status(404).json({message:`Falta informacion`})
+    }
 
-    const ahora = new Date()
-
-    const gmt3 = new Date(ahora.getTime() - 3 * 60 * 60 * 1000)
-
-    const newProduct = new productoSchema({
-        productName: removeAccents(capitalize(productName)),
-        fechaInicio: fechaInicio,
-        horaInicial: gmt3.toISOString(),
-        cantidad,
-        unidades
-        
-    })
-
-    console.log(newProduct)
+    const flagAgregarLista = await productoSchema.find(
+        { productName: { $regex: removeAccents(productName), $options: "i" } }
+    ).collation({ locale: "es", strength: 1 })
+    console.log(flagAgregarLista)
 
     try{
-        await newProduct.save().then(()=>flagRes = true)
 
-        if (flagRes) res.json({mensaje:"Producto Creado"})
+        if(flagAgregarLista.length >=1){
+            return res.status(200).json({message: "El producto ya se encuentra en la lista",found:true})
+        } else{
+
+            const ahora = new Date()
+            const gmt3 = new Date(ahora.getTime() - 3 * 60 * 60 * 1000)
+    
+            const newProduct = new productoSchema({
+                productName: removeAccents(capitalize(productName)),
+                fechaInicio: fechaInicio,
+                horaInicial: gmt3.toISOString(),
+                cantidad,
+                unidades
+                
+            })
+    
+            
+    
+            await newProduct.save().then(()=>flagRes = true)
+    
+            if (flagRes) res.json({message:"Producto agregado",found:false})
+        }
+    
+    
         
 
     }catch(e){

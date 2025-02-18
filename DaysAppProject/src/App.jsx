@@ -1,217 +1,77 @@
-import { Fragment, useCallback, useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Routes, Link} from "react-router-dom";
+import { useState } from "react";
 
-import axios from 'axios'
-import FormDataProducto from './components/FormDataProducto'
-import BarraProgresoDiario from './components/BarraProgresoDiario'
-import SearchingBar from './components/SearchingBar.jsx'
-
-
-import { randomUtils } from './functions/random.js'
-import { removeAccents } from './functions/removeAccents.js'
-
-import Swal from 'sweetalert2'
-import {ClockLoader} from 'react-spinners'
-import days from 'dayjs'
+import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
+import ProduccionDiaria from "./pages/ProduccionDiaria.jsx";
 
 
-const loadingMsgs = ["Ostia che","Abriendo el local","Despertando a los panaderos","Sacando las cosas", "Secando el pan", "Pintando las facturas", "Poniendo agua a la cafetera"]
+import { GiCook } from "react-icons/gi";
+import { CiClock1 } from "react-icons/ci";
+import { AiOutlineMenu } from "react-icons/ai";
+import { RxCross1 } from "react-icons/rx";
 
-function App() {
-  const serverUrl = import.meta.env.DEV ? import.meta.env.VITE_LOCAL : import.meta.env.VITE_RENDER
+
+
+
+
+// function SwitchModes(){
+//   //como no puedo manejar  Link dentro del router lo implemento como una funcion que retorna un componente
+//   const location = useLocation()
+//   return(
+//     <Fragment>
+
+//       {location.pathname === '/' ? (
   
-  const [diaActual,setDiaActual] = useState(days().format('DD/MM/YYYY'))
-  const [horaActual, setHoraActual] = useState(days().format('HH:mm:ss'))
+//         <Link to="/produccion-diaria" className='fixed self-end'><GiCook size={50}/></Link>
+//       ):(
+//         <Link to="/" className='fixed self-start'><CiClock1 size={50}/></Link>
   
-  const diaValue = days().format('YYYY-MM-DD')
-  
-  const [BTNProdcuto,setBTNProducto] = useState(false)
-
-  const [allData,setAllData] = useState([])
-  const [allDataCopy,setAllDataCopy] = useState([])
-
-  
-  const [flagUpdate, setFlagUpdate] = useState(false)
-  const [flagRes, setFalgRes] = useState(null)
-  const [isLoading,setIsLoading] = useState(null)
-
-  const [searched,SetSearched] = useState(null)
-
-  
- 
-  
-  const getProducts = useCallback(async ()=>{
-    try {
-      
-      if(!searched){
-
-        setIsLoading(true)
-        
-        const res = await axios.get(`${serverUrl}/allProducts`)
-        
-        // res = await axios.get(`${serverUrl}/find/${searched}`)
-        
-        setAllData(res.data)
-        if(!res) throw new Error("Error al buscar los datos")
-      }
-
-      //mejorar
-    } catch (error) {
-      console.log(error)
-    } finally{
-      setIsLoading(false)
-    }
+//       )}
+//     </Fragment>
     
-  },[serverUrl,setIsLoading,searched])
-  
-  // isLoading ? console.log("buscando data") : console.log("operacion terminada")
-
-  useEffect(()=>{
-    try {
-      getProducts()
-      
-    } catch (error) {
-      console.log(error)
-    }
-    
-  },[getProducts,flagUpdate,searched])
-  
-  
-  //creo una cipia exaacta de la info de la db y la copio para evitar volver a hacer consultas
-  //la transformo un JSON y despues la parseo
-  useEffect(()=>{
-    setAllDataCopy(JSON.parse(JSON.stringify(allData)))
-  },[allData])
-
- 
-  //filtro sobre la data original de la db y la aplico a la copia par alaterar su estado
-  useEffect(()=>{
-    if(searched){
-
-      const target = removeAccents(searched.toLowerCase())
-      const filter = allData.filter(item => removeAccents(item.productName).toLowerCase().includes(target))
-      setAllDataCopy(filter)
-
-    }else{
-      setAllDataCopy(allData)
-    }
-  },[searched,allData])
-
-  const productData = async (e)=>{
-    e.preventDefault()
-    // console.log(e.target[0].value.toLowerCase())
-
-    console.log(e.target[4].value)
-  
-    const nombreDelProducto = e.target[0].value !== ""? e.target[0].value: e.target[1].value
-    const [anio,mes,dia] = e.target[4].value.split('-')
-    // console.log(dia,mes,anio)
-
-
-    await axios.post(`${serverUrl}/new`,{
-      "productName":nombreDelProducto.toLowerCase(),
-      "fechaInicio":`${dia}/${mes}/${anio}`,
-      "cantidad":e.target[2].value,
-      "unidades":e.target[3].value
-    }).then(res=>{
-      console.log(res)
-      setFlagUpdate((prev) => !prev)
-      setFalgRes(res.data.mensaje)
-
-      setTimeout(() => {
-        setFalgRes(null)
-      }, 1000);
-
-
-      e.target.reset()
-      }).catch(e=>console.log(e))
-
-      Swal.fire({
-        title: "Producto agregado",
-        text: "",
-        icon: "success"
-      });
-    
-  }
-
-
-  setInterval(()=>{
-    setDiaActual(days().format('DD/MM/YYYY'))
-    setHoraActual(days().format('HH:mm:ss'))
-      
-  },1000)
+//   )
+// }
 
 
 
+function App(){
 
-  
-  
+  const [menu,setMenu] = useState(false)
 
-  return (
-    <Fragment>
-    
-      <div className='bg-black min-h-screen min-w-screen  text-white flex flex-col items-center '>
-        {isLoading ? (
-          <div className='flex flex-col gap-2 items-center justify-center min-h-screen'>
-              <ClockLoader color="#FFD700" size={100}/>
-              <p>{randomUtils.choice(loadingMsgs)}...</p>
+  return(
+    <div className='bg-black min-h-screen min-w-screen  text-white flex flex-col items-center '>
+
+
+
+    <Router>
+
+      <nav className="self-start flex flex-col fixed items-center bg-orange-600 min-h-screen sm:min-w-screen">
+
+        {menu ? (
+          <div >
+            <RxCross1 size={20} className="m-4 w-full" onClick={()=>(setMenu(!menu))}/>
+
+            <Link to="/" className=" flex items-center p-4 hover:bg-black "><CiClock1 size={50}/>Days App</Link>
+            <Link to="/produccion-diaria" className=" flex items-center p-2 hover:bg-black "><GiCook size={50}/>Produccion</Link>
           </div>
-        
-        )
-        :(
+            ):
+            (<AiOutlineMenu size={50}   onClick={()=>(setMenu(!menu))}/>)}
 
-          <div className='bg-black flex flex-col items-center '>
+        </nav>
 
-            <h1 className='text-white text-4xl pt-5'>DaysApp</h1>
+      {/* <SwitchModes/> */}
 
-            <span className='text-white'>Hoy es {diaActual}, {horaActual}</span>
+      <Routes>
+        <Route path="/" element={<DaysAppMainPage/>}/>
+        <Route path="/produccion-diaria" element={<ProduccionDiaria/>}/>
+      </Routes>
 
-            <button className='rounded-lg bg-green-500 w-30 p-2 text-center' 
-              onClick={()=>{setBTNProducto(true); if(BTNProdcuto) setBTNProducto(false)}}>Nuevo producto</button>
+    </Router>
 
-            {BTNProdcuto ? (
-              <div className='flex flex-col items-center'>
-
-                <FormDataProducto 
-                  productData={productData} diaValue={diaValue} 
-                />
-                {flagRes ? <p className="text-white">Producto agregado!</p> : null}
-                
-                
-                
-              </div>
-
-            ):""} 
-
-            {/* Barra de busqueda */}
-            <SearchingBar 
-            searched={searched} 
-            SetSearched={SetSearched}
-            serverUrl={serverUrl}
-             />
-
-            
-              
-          
-
-            {allDataCopy.map((item,index)=>{return(
-              
-
-              <BarraProgresoDiario key={index} allDataCopy={item} flagUpdate={flagUpdate} setFlagUpdate={setFlagUpdate} serverUrl={serverUrl} />
-            
-              
-            )})}
-
-          </div>
-
-        
-
-        )}
-        
-
-      </div>
-
-    </Fragment>
+    </div>
+    
   )
 }
+
 
 export default App
