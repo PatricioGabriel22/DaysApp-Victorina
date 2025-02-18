@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start":"npm run db",
     "test": "cross-env TEST=true nodemon src/server.js",
     "db": "cross-env TEST=false nodemon src/server.js",
     "cron": "cross-env TEST=false nodemon src/worker.js",

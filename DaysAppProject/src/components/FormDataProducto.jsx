@@ -1,19 +1,54 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import Select from 'react-select'
 import PropTypes from "prop-types";
 import {ListaProductos} from '../functions/products.js'
 
 
+const options = ListaProductos.map((producto)=>({
+    value:producto,
+    label:producto
+}))
 
 
 
-export default function FormDataProducto({productData,diaValue,prevName}){
+
+export default function FormDataProducto({productData}){
     
+    const [targetLista,setTargetLista] = useState()
 
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        // console.log(e.target[0].value.toLowerCase())
+    
+        console.log(e)
+    
+        const nombreDelProducto = e.target[0].value !== ""? e.target[0].value: targetLista.value
+        const [anio,mes,dia] = e.target[4].value.split('-')
+        // console.log(dia,mes,anio)
+
+        
+       const collectedData = {
+        "productName":nombreDelProducto.toLowerCase(),
+        "fechaInicio":`${dia}/${mes}/${anio}`,
+        "cantidad":e.target[2].value,
+        "unidades":e.target[3].value
+        }
+
+        
+
+        productData(collectedData)
+        e.target.reset()
+
+
+    }
+
+    
 
     return(
         <Fragment>
 
-            <form className='flex flex-col w-60 text-black pt-5 text-center ' onSubmit={productData}>
+            <form className='flex flex-col w-60 text-black pt-5 text-center ' onSubmit={handleSubmit}>
                     
                 <label htmlFor='nombreProducto' ></label>
                 <input 
@@ -23,17 +58,14 @@ export default function FormDataProducto({productData,diaValue,prevName}){
                     className=" border-gray-300 rounded p-2 w-full"
                 />
 
-                <select className=" border-gray-300 rounded p-2 w-full mt-2" id="nombreProducto">
-                        <option value="" defaultValue={'Buscar en lista'} 
-                            className="text-center ">Buscar en lista</option>
-                    {ListaProductos.map((producto,index)=>{
-                        return(
-
-                            <option key={producto+index} value={`${producto}`}>{producto}</option>
-                        )
-                    })}
-    
-                </select>
+               <Select
+                className="pt-2"
+                options={options}
+                value={targetLista}
+                onChange={setTargetLista}
+                isSearchable
+                placeholder="Buscar en lista"
+               />
 
 
                 <div className="flex flex-row border border-gray-300 rounded h-8 mt-2">
@@ -42,7 +74,7 @@ export default function FormDataProducto({productData,diaValue,prevName}){
                     <input 
                         type="text" 
                         id="cantidad" 
-                        placeholder={`${diaValue ? "Cantidad ": prevName }`}
+                        
                         className="text-center w-2/3"
                     />
                     <select className="w-1/2" id="unidades" >
@@ -60,22 +92,20 @@ export default function FormDataProducto({productData,diaValue,prevName}){
 
 
    
-                {diaValue ? (
-                    <Fragment>
-                        <label htmlFor="FechaElaboracion" className="text-white mt-4">
-                            Fecha de Elaboración
-                        </label>
-                        <input
-                            type="date"
-                            id="FechaElaboracion"
-                            className="border border-gray-300 rounded p-2"
-                            required
-                            
-                        />
-                    </Fragment>
-                ) : (
-                    ''
-                )}
+                
+                <Fragment>
+                    <label htmlFor="FechaElaboracion" className="text-white mt-4">
+                        Fecha de Elaboración
+                    </label>
+                    <input
+                        type="date"
+                        id="FechaElaboracion"
+                        className="border border-gray-300 rounded p-2 w-full"
+                        required
+                        
+                    />
+                </Fragment>
+               
 
 
 
@@ -92,6 +122,5 @@ export default function FormDataProducto({productData,diaValue,prevName}){
 
 FormDataProducto.propTypes = {
     productData: PropTypes.func,
-    diaValue: PropTypes.string,
-    prevName:PropTypes.string
+
   };

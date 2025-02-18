@@ -13,6 +13,7 @@ import SearchingBar from '../components/SearchingBar.jsx'
 
 import { randomUtils } from '../functions/random.js'
 import { browserAction } from '../functions/searchUtils.js'
+import PropTypes from 'prop-types'
 
 
 
@@ -31,7 +32,7 @@ export default function DaysAppMainPage(){
   const [diaActual,setDiaActual] = useState(days().format('DD/MM/YYYY'))
   const [horaActual, setHoraActual] = useState(days().format('HH:mm:ss'))
 
-  const diaValue = days().format('YYYY-MM-DD')
+  // const diaValue = days().format('YYYY-MM-DD')
 
   const [BTNProdcuto,setBTNProducto] = useState(false)
 
@@ -43,8 +44,12 @@ export default function DaysAppMainPage(){
   const [flagRes, setFalgRes] = useState(null)
   const [isLoading,setIsLoading] = useState(null)
 
-  const [searched,setSearched] = useState(null)
+  
 
+  const [searched,setSearched] = useState(null)
+  
+
+  
 
 
 
@@ -92,25 +97,12 @@ export default function DaysAppMainPage(){
 
   },[searched,allData])
 
-  const productData = async (e)=>{
-    e.preventDefault()
-    // console.log(e.target[0].value.toLowerCase())
+  const productData = async (data)=>{
+    
 
-    console.log(e.target[4].value)
-
-    const nombreDelProducto = e.target[0].value !== ""? e.target[0].value: e.target[1].value
-    const [anio,mes,dia] = e.target[4].value.split('-')
-    // console.log(dia,mes,anio)
-
-
-    await axios.post(`${serverUrl}/new`,{
-      "productName":nombreDelProducto.toLowerCase(),
-      "fechaInicio":`${dia}/${mes}/${anio}`,
-      "cantidad":e.target[2].value,
-      "unidades":e.target[3].value
-    })
+    await axios.post(`${serverUrl}/new`,data)
     .then(res=>{
-      console.log(res)
+     
       setFlagUpdate((prev) => !prev)
       setFalgRes(res.data.mensaje)
 
@@ -119,12 +111,11 @@ export default function DaysAppMainPage(){
       }, 1000);
 
 
-      Swal.fire({
-        title: `${res.data.message}`,
-        text: "",
-        icon: `${res.data.found? "warning" :"success"}`
-    })
-      e.target.reset()
+        Swal.fire({
+          title: `${res.data.message}`,
+          text: "",
+          icon: `${res.data.found? "warning" :"success"}`
+      })
       }).catch((e)=>{
         console.log(e)
 
@@ -179,7 +170,8 @@ export default function DaysAppMainPage(){
               <div className='flex flex-col items-center'>
 
                 <FormDataProducto
-                  productData={productData} diaValue={diaValue}
+                  productData={productData}
+                 
                 />
                 {flagRes ? <p className="text-white">Producto agregado!</p> : null}
 
@@ -225,6 +217,12 @@ export default function DaysAppMainPage(){
 
 }
 
+
+DaysAppMainPage.propTypes = {
+    isLoading: PropTypes.bool,
+    setIsLoading: PropTypes.func,
+    
+  };
 
 
 
