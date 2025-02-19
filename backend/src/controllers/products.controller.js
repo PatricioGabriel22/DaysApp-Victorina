@@ -62,13 +62,11 @@ export const crearNuevo = async (req,res)=>{
             return res.status(200).json({message: "El producto ya se encuentra en la lista",found:true})
         } else{
 
-            const ahora = new Date()
-            const gmt3 = new Date(ahora.getTime() - 3 * 60 * 60 * 1000)
+
     
             const newProduct = new productoSchema({
                 productName: removeAccents(capitalize(productName)),
                 fechaInicio: fechaInicio,
-                horaInicial: gmt3.toISOString(),
                 cantidad,
                 unidades
                 

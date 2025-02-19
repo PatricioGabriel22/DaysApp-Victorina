@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
 import ProduccionDiaria from "./pages/ProduccionDiaria.jsx";
 import Nav from "./components/Nav.jsx";
-import {  useState } from "react";
+import {  useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
 
 
@@ -37,10 +38,55 @@ import {  useState } from "react";
 
 function App(){
 
+  const serverUrl = import.meta.env.DEV ? import.meta.env.VITE_LOCAL : import.meta.env.VITE_RENDER
+
   const [showBar,setShowBar] = useState(true)
+  const [isLoading,setIsLoading] = useState(null)
+  const [flagUpdate, setFlagUpdate] = useState(false)
 
 
-  console.log(showBar)
+
+  const [allData,setAllData] = useState([])
+
+
+
+    
+  const getProducts = useCallback(async ()=>{
+   
+  
+    setIsLoading(true)
+
+    const res = await axios.get(`${serverUrl}/allProducts`)
+    if(!res) throw new Error("Error al buscar los datos")
+
+    // res = await axios.get(`${serverUrl}/find/${searched}`)
+
+    setIsLoading(false)
+
+    return res.data
+
+
+  },[serverUrl,setIsLoading])
+
+
+
+  useEffect(()=>{
+
+    try {
+      //Cargo el array original y creo una copia para realizar busqueda y no alterar el original
+      getProducts().then(responseFromDB => {
+      setAllData(responseFromDB);
+      
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  },[getProducts,flagUpdate])
+
+
+
   return(
     <div className='bg-black min-h-screen min-w-screen  text-white flex flex-col items-center '>
 
@@ -49,14 +95,27 @@ function App(){
 
     <Router>  
       
-      {showBar? <Nav />:""}
+      {isLoading? "":<Nav />}
     
 
       {/* <SwitchModes/> */}
 
       <Routes>
-        <Route path="/" element={<DaysAppMainPage  />} />
-        <Route path="/produccion-diaria" element={<ProduccionDiaria onClick={()=>setShowBar(!showBar)}/>}/>
+
+        <Route path="/" element={<DaysAppMainPage 
+          allData={allData} 
+          isLoading={isLoading}
+          flagUpdate={flagUpdate}
+          setFlagUpdate={setFlagUpdate}
+          serverUrl={serverUrl} />} 
+        />
+
+        <Route path="/produccion-diaria" element={<ProduccionDiaria 
+          allData={allData}
+          isLoading={isLoading}
+          onClick={()=>setShowBar(!showBar)}/>}
+        />
+
       </Routes>
 
     </Router>

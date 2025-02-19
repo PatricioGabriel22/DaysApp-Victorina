@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -25,9 +25,8 @@ const loadingMsgs = ["Ostia che","Abriendo el local","Despertando a los panadero
 
 
 
-export default function DaysAppMainPage(){
-
-  const serverUrl = import.meta.env.DEV ? import.meta.env.VITE_LOCAL : import.meta.env.VITE_RENDER
+export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpdate,serverUrl}){
+  
 
   const [diaActual,setDiaActual] = useState(days().format('DD/MM/YYYY'))
   const [horaActual, setHoraActual] = useState(days().format('HH:mm:ss'))
@@ -36,39 +35,18 @@ export default function DaysAppMainPage(){
 
   const [BTNProdcuto,setBTNProducto] = useState(false)
 
-  const [allData,setAllData] = useState([])
   const [allDataCopy,setAllDataCopy] = useState([])
 
 
-  const [flagUpdate, setFlagUpdate] = useState(false)
   const [flagRes, setFalgRes] = useState(null)
-  const [isLoading,setIsLoading] = useState(null)
+ 
 
   
 
   const [searched,setSearched] = useState(null)
   
 
-  
 
-
-
-  const getProducts = useCallback(async ()=>{
-   
-  
-    setIsLoading(true)
-
-    const res = await axios.get(`${serverUrl}/allProducts`)
-    if(!res) throw new Error("Error al buscar los datos")
-
-    // res = await axios.get(`${serverUrl}/find/${searched}`)
-
-    setIsLoading(false)
-
-    return res.data
-
-
-  },[serverUrl,setIsLoading])
 
   // isLoading ? console.log("buscando data") : console.log("operacion terminada")
 
@@ -76,20 +54,17 @@ export default function DaysAppMainPage(){
 
     try {
       //Cargo el array original y creo una copia para realizar busqueda y no alterar el original
-     getProducts().then(responseFromDB => {
-      setAllData(responseFromDB);
-      setAllDataCopy(responseFromDB)
-     })
+      setAllDataCopy(allData)
+     
 
     } catch (error) {
       console.log(error)
     }
 
-  },[getProducts,flagUpdate])
+  },[allData,flagUpdate])
 
 
-
-
+  
   //filtro sobre la data original de la db y la aplico a la copia par alaterar su estado
   useEffect(()=>{
     searched  ? setAllDataCopy(browserAction(searched,allData)) : setAllDataCopy(allData)
@@ -103,7 +78,7 @@ export default function DaysAppMainPage(){
     await axios.post(`${serverUrl}/new`,data)
     .then(res=>{
      
-      setFlagUpdate((prev) => !prev)
+      setFlagUpdate(!flagUpdate)
       setFalgRes(res.data.mensaje)
 
       setTimeout(() => {
@@ -127,8 +102,6 @@ export default function DaysAppMainPage(){
 
 
       })
-
-    
 
   }
 
@@ -219,8 +192,12 @@ export default function DaysAppMainPage(){
 
 
 DaysAppMainPage.propTypes = {
+    allData: PropTypes.array,
     isLoading: PropTypes.bool,
-    setIsLoading: PropTypes.func,
+    flagUpdate:PropTypes.bool,
+    setFlagUpdate:PropTypes.func,
+    serverUrl: PropTypes.string
+    
     
   };
 
