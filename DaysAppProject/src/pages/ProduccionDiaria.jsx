@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Fragment, useEffect, useState } from "react";
-import { agruparPorMes, buscarPorFechaDeProduccion} from "../../../test";
+import { agruparPorMes, buscarPorFechaDeProduccion} from "../functions/test.js";
 
 
 
@@ -8,7 +8,7 @@ import { agruparPorMes, buscarPorFechaDeProduccion} from "../../../test";
 export default function ProduccionDiaria({allData,isLoading}){
 
     const [fechaDelInput,setFechaDelInput] = useState('') 
-    const [produMensual,setProduMensual] = useState() 
+    // const [produMensual,setProduMensual] = useState() 
     const [produDiaria,setproduDiaria] = useState() 
 
 
