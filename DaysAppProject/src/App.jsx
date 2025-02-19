@@ -49,7 +49,7 @@ function App(){
   const [allData,setAllData] = useState([])
 
 
-
+  console.log(showBar)
     
   const getProducts = useCallback(async ()=>{
    
@@ -95,7 +95,7 @@ function App(){
 
     <Router>  
       
-      {isLoading? "":<Nav />}
+      {isLoading? "": (showBar ? <Nav />:"")}
     
 
       {/* <SwitchModes/> */}
