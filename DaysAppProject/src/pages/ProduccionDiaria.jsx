@@ -142,7 +142,7 @@ export default function ProduccionDiaria({serverUrl}){
             </div>
 
 
-            <div className="bg-white  sm:min-w-screen md:w-[600px] p-1 rounded text-black m-5">
+            <div className="bg-white  w-screen md:w-[600px] p-1 rounded text-black m-5">
                 
                 {/* Cabecera de la "tabla" */}
                 <div className="flex justify-between items-center  border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
