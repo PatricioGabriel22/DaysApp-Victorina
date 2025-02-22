@@ -131,7 +131,7 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
 
           <div className='flex flex-col items-center '>
 
-            <h1 className='text-white text-4xl pt-5'>DaysApp</h1>
+            <h1 className='text-white text-4xl'>DaysApp</h1>
 
 
             <span className='text-white'>Hoy es {diaActual}, {horaActual}</span>
