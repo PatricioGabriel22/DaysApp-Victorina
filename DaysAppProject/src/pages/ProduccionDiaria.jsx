@@ -121,7 +121,7 @@ export default function ProduccionDiaria({serverUrl}){
                 </div>
             </div>
 
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-4 sm:flex-col">
 
                 {produDiaria.length>0 ? (
                         <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
