@@ -19,8 +19,11 @@ export const productsRouter = Router()
 
 
 
-productsRouter.get('/allProducts',getAllProducts)
+productsRouter.get('/allProducts/:db?',getAllProducts)
 productsRouter.get('/find/:searched',findSearchedProducts)
+
+// productsRouter.get('/allProducts',getAllProducts)
+
 
 productsRouter.post("/new",crearNuevo)
 

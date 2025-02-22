@@ -113,6 +113,7 @@ function App(){
         <Route path="/produccion-diaria" element={<ProduccionDiaria 
           allData={allData}
           isLoading={isLoading}
+          serverUrl={serverUrl}
           onClick={()=>setShowBar(!showBar)}/>}
         />
 

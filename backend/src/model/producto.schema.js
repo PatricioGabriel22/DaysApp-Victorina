@@ -2,18 +2,14 @@ import mongoose from 'mongoose'
 import {TEST} from '../config/envStuff.js'
 
 
-console.log(TEST)
+// JSON.parse(TEST) se usa para convertir la cadena de texto "true" en true y "false" en false, de modo que puedas trabajar con un booleano real en JavaScript.
 
 let switchToTest = JSON.parse(TEST)
-console.log(switchToTest)
-console.log("----------------------")
 
 let collectionTarget = switchToTest ? "tests" : "productos"
-console.log(collectionTarget)
 
-collectionTarget === "productos" ? console.log("Modo produccion") : console.log("Estamos en modo test") 
 
-const productoSchema = new mongoose.Schema({
+const productoDaysAppSchema = new mongoose.Schema({
     productName:{
         type:String,
         required:true
@@ -38,10 +34,11 @@ const productoSchema = new mongoose.Schema({
         type:String
     },
     cantidad:Number,
-    unidades:String
+    unidades:String,
+    precio:Number
 
 })
 
 
 
-export default mongoose.model(collectionTarget,productoSchema)
+export default mongoose.model(collectionTarget,productoDaysAppSchema)

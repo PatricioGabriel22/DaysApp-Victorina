@@ -137,8 +137,12 @@
 
 export const ListaProductos = [
     "Budín naranja",
+    "Budín naranja",
+    "Budin limon",
+    "Budin chocolate",
+    "Budin marmolado",
     "Budín chocolate con nuez",
-    "Minon",
+    "Minion",
     "Marineras queso",
     "Churrinches",
     "Churros",
