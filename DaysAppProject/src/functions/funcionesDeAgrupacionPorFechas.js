@@ -3,7 +3,15 @@ const productosDelCuaderno = [
         productName:"Budín naranja",
         cantidad:7,
         unidades:"unidades",
-        fechaInicio:"12/2/25"
+        fechaInicio:"12/2/25",
+        precio:3
+    },
+    {
+        productName:"Pan",
+        cantidad:10,
+        unidades:"unidades",
+        fechaInicio:"12/2/25",
+        precio:3
     },
     {
         productName:"Budín naranja",
@@ -13,9 +21,10 @@ const productosDelCuaderno = [
     },
     {
         productName:"Pan",
-        cantidad:1.95,
+        cantidad:2,
         unidades:"sobro",
-        fechaInicio:"1/2/25"
+        fechaInicio:"1/2/25",
+        precio:3
     },
     {
         productName:"Pan 2",
@@ -104,6 +113,12 @@ export function buscarPorFechaDeProduccion(fechaDeProduccion,listaProductos){
 
 
 
+
+
+
+
+
+
 export function agruparPorMes(productos) {
     const listaProduccionMensual = {}
 
@@ -119,37 +134,42 @@ export function agruparPorMes(productos) {
             };
         }
 
-        if (producto.unidades !== 'sobro') {
+        if (!producto.sobro) {
             // Busca el producto existente en el array de productos
-            const existingProduct = listaProduccionMensual[keyMonth].productos.find(p => p.nombre === producto.productName)
+            //devuelve el producto o undefined (falsy)
+            const acumuladorMensualDeProducto = listaProduccionMensual[keyMonth].productos.find(productoEnLista => 
+                (productoEnLista.nombre === producto.productName)
+            )
 
-            if (!existingProduct) {
+            if (!acumuladorMensualDeProducto) {
                 // Si no existe, lo agrega
                 listaProduccionMensual[keyMonth].productos.push({
                     nombre: producto.productName,
                     cantidad: Number(producto.cantidad),
                     unidades: producto.unidades,
                     precio: Number(producto.precio),
+                
                 });
             } else {
                 // Sumar cantidades y precioes si el producto ya existe
-                existingProduct.cantidad += Number(producto.cantidad);
-                existingProduct.precio += Number(producto.precio);
+                acumuladorMensualDeProducto.cantidad += Number(producto.cantidad);
+                acumuladorMensualDeProducto.precio += Number(producto.precio);
             }
         } else {
             // Agrega el producto al array de sobros
-            const existingSobro = listaProduccionMensual[keyMonth].sobros.find(s => s.nombre === producto.productName);
-            if (!existingSobro) {
+            const acumuladorSobrasDeProducto = listaProduccionMensual[keyMonth].sobros.find(s => s.nombre === producto.productName);
+            if (!acumuladorSobrasDeProducto) {
                 listaProduccionMensual[keyMonth].sobros.push({
                     nombre: producto.productName,
                     cantidad: Number(producto.cantidad),
                     unidades: producto.unidades,
                     precio: Number(producto.precio),
-                });
+                    sobro:producto.sobro
+                })
             } else {
                 // Sumar cantidades y precioes si el sobro ya existe
-                existingSobro.cantidad += Number(producto.cantidad);
-                existingSobro.precio += Number(producto.precio);
+                acumuladorSobrasDeProducto.cantidad += Number(producto.cantidad);
+                acumuladorSobrasDeProducto.precio += Number(producto.precio);
             }
         }
     });
@@ -163,7 +183,26 @@ export function agruparPorMes(productos) {
 
 
 
-console.log(agruparPorMes(productosDelCuaderno)['2/25'].productos)
+const produccionMensual = agruparPorMes(productosDelCuaderno)['2/25'].productos
+const sobrasMensuales = agruparPorMes(productosDelCuaderno)['2/25'].sobros
+
+// console.log(produccionMensual)
+
+let listaFinal = []
+produccionMensual.forEach((producto)=>{
+
+
+    const targetParaDescontar = sobrasMensuales.find(item => item.nombre === producto.nombre)
+
+    if(targetParaDescontar){
+
+        producto.cantidad -= targetParaDescontar.cantidad
+        producto.precio = producto.cantidad * producto.precio
+        
+        listaFinal.push(producto)
+    }
+})
+
 
 
 

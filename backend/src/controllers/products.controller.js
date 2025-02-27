@@ -59,7 +59,7 @@ export const findSearchedProducts = async(req,res)=>{
 export const crearNuevo = async (req,res)=>{
     let flagRes = false
     
-    const {productName,fechaInicio,cantidad,unidades,precio} = req.body
+    const {productName,fechaInicio,cantidad,unidades,precio,sobro} = req.body
 
     console.log( productName,fechaInicio,cantidad,unidades)
 
@@ -72,7 +72,8 @@ export const crearNuevo = async (req,res)=>{
         fechaInicio,
         cantidad,
         unidades,
-        precio
+        precio,
+        sobro
         
     }
 
@@ -85,20 +86,24 @@ export const crearNuevo = async (req,res)=>{
     try{
 
         const stockInfo = new stockSchema(dataDelBody)
-
         const newProduct = new productoDaysAppSchema(dataDelBody)
 
-        await stockInfo.save()
-        await newProduct.save().then(()=>flagRes = true)
+        await Promise.all([
+            stockInfo.save(),
+            newProduct.save()
+        ])
 
-        if (flagRes) res.json({message:"Producto agregado",found:false})
+       return res.json({message:"Producto agregado",found:false})
         
     
     
         
 
     }catch(e){
-        console.log(e._message) 
+        return res.status(500).json({
+            message:"Ocurro un error al eliminar",
+            error: e.message
+        })
     }
 
     
@@ -141,12 +146,26 @@ export const eliminarProducto = async(req,res)=>{
     console.log(req.body)
     try{
 
-        const finder = await productoDaysAppSchema.deleteOne({productName:productName, fechaInicio:fechaInicio})
-        res.json({"message":"Producto Eliminado"})
+        await Promise.all([
+
+            stockSchema.deleteOne({productName:productName, fechaInicio:fechaInicio}),
+            productoDaysAppSchema.deleteOne({productName:productName, fechaInicio:fechaInicio})
+        ])
+        
+
+        return res.json({
+            success: true,
+            message: "Productos eliminados correctamente"
+            
+        })
     
         
     } catch(e){
-        console.log(e)
+        return res.status(500).json({
+            success: false,
+            message: "Error al eliminar los productos",
+            error: e.message
+        })
     }
 
     

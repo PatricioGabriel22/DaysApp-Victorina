@@ -22,7 +22,8 @@ const stockSchema = new mongoose.Schema({
     },
     cantidad:Number,
     unidades:String,
-    precio:Number
+    precio:Number,
+    sobro:Boolean
 
 })
 

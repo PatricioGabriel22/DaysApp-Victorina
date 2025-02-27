@@ -33,7 +33,8 @@ export default function FormDataProducto({productData}){
         "fechaInicio":`${dia}/${mes}/${anio}`,
         "cantidad":e.target[3].value,
         "unidades":e.target[4].value,
-        "precio":e.target[5].value
+        "sobro":e.target[5].checked,
+        "precio":e.target[6].value
         }
 
         console.log(collectedData)
@@ -85,10 +86,10 @@ export default function FormDataProducto({productData}){
                     <input 
                         type="text" 
                         id="cantidad" 
-                    className="text-center w-2/3"/>
+                    className="text-center w-1/3"/>
 
 
-                    <select className="w-1/2" id="unidades" >
+                    <select className="w-2/3" id="unidades" >
                     
                         <option value="bagueteras">Bagueteras</option>
                         <option value="latas">Latas</option>
@@ -96,11 +97,14 @@ export default function FormDataProducto({productData}){
                         <option value="paquetes">Paquetes</option>
                         <option value="kilos">Kilos</option>
                         <option value="gramos">Gramos</option>
-                        <option value="sobro">Sobró</option>
+                        
 
                     </select>
-
                     
+                    <label className="w-3/3 bg-white flex items-center gap-1"> Sobro
+                        <input type="checkbox"/>
+
+                    </label>
       
                 </div>
 
