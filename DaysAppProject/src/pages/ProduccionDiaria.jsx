@@ -164,7 +164,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                         <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
                         <p className="w-1/4 text-center">{item.sobro ? `${item.cantidad} ${item.unidades}`: item.cantidad}</p>
                         <p className="w-1/4 text-center">{item.sobro ? 'sobro': item.unidades}</p>
-                        <p className="w-1/4 text-center">{item.precio ? `$${item.precio * item.cantidad}` : ""}</p>
+                        <p className="w-1/4 text-center">{item.precio ? `$${Math.round(item.precio * item.cantidad)}` : ""}</p>
                     </div>
                 ))}
             </div>
