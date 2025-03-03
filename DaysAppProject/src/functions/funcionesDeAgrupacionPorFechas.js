@@ -4,32 +4,37 @@ const productosDelCuaderno = [
         cantidad:7,
         unidades:"unidades",
         fechaInicio:"12/2/25",
-        precio:3
+        precio:3,
+        sobro:false
     },
     {
         productName:"Pan",
         cantidad:10,
-        unidades:"unidades",
+        unidades:"Kilos",
         fechaInicio:"12/2/25",
-        precio:3
+        precio:3,
+        sobro:true
     },
     {
         productName:"Budín naranja",
         cantidad:1,
+        precio:3,
         unidades:"unidades",
-        fechaInicio:"12/2/25"
+        fechaInicio:"12/2/25",
+        sobro:false
     },
     {
         productName:"Pan",
         cantidad:2,
-        unidades:"sobro",
         fechaInicio:"1/2/25",
-        precio:3
+        unidades:"Kilos",
+        precio:3,
+        sobro:false
     },
     {
         productName:"Pan 2",
         cantidad:0.45,
-        unidades:"sobro",
+       
         fechaInicio:"1/5/25"
     },
     {
@@ -65,18 +70,18 @@ const productosDelCuaderno = [
     {
         productName:"Minion",
         cantidad:7,
-        unidades:"sobro",
+       
         fechaInicio:"19/1/25"
     },
     {
         productName:"Minion",
         cantidad:3,
-        unidades:"sobro",
+       
         fechaInicio:"19/1/25"
     },    {
         productName:"Figasas",
         cantidad:3,
-        unidades:"sobro",
+       
         fechaInicio:"19/1/25"
     },
 
@@ -113,68 +118,30 @@ export function buscarPorFechaDeProduccion(fechaDeProduccion,listaProductos){
 
 
 
+function splitFecha(fecha){
 
+    let formatedDate = ''
+    const splitedDate = fecha.includes('-') ? fecha.split('-') : fecha.split('/')
 
+    console.log(splitedDate)
 
+    if(splitedDate.length === 3){
+        
+        const [year, month, day] = splitedDate
+       
+        formatedDate = `${day}/${month}/${year}`
 
+    }else if(splitedDate.length === 2){
 
+        const [year, month] = splitedDate
 
-export function agruparPorMes(productos) {
-    const listaProduccionMensual = {}
+        formatedDate = `${month}/${year}`
 
-    productos.forEach((producto) => {
-        const [, month, year] = producto.fechaInicio.split('/');
-        const keyMonth = `${month}/${year}`;
-
-        // Inicializa la entrada para el mes si no existe
-        if (!listaProduccionMensual[keyMonth]) {
-            listaProduccionMensual[keyMonth] = {
-                productos: [],
-                sobros: [],
-            };
-        }
-
-        if (!producto.sobro) {
-            // Busca el producto existente en el array de productos
-            //devuelve el producto o undefined (falsy)
-            const acumuladorMensualDeProducto = listaProduccionMensual[keyMonth].productos.find(productoEnLista => 
-                (productoEnLista.nombre === producto.productName)
-            )
-
-            if (!acumuladorMensualDeProducto) {
-                // Si no existe, lo agrega
-                listaProduccionMensual[keyMonth].productos.push({
-                    nombre: producto.productName,
-                    cantidad: Number(producto.cantidad),
-                    unidades: producto.unidades,
-                    precio: Number(producto.precio),
-                
-                });
-            } else {
-                // Sumar cantidades y precioes si el producto ya existe
-                acumuladorMensualDeProducto.cantidad += Number(producto.cantidad);
-                acumuladorMensualDeProducto.precio += Number(producto.precio);
-            }
-        } else {
-            // Agrega el producto al array de sobros
-            const acumuladorSobrasDeProducto = listaProduccionMensual[keyMonth].sobros.find(s => s.nombre === producto.productName);
-            if (!acumuladorSobrasDeProducto) {
-                listaProduccionMensual[keyMonth].sobros.push({
-                    nombre: producto.productName,
-                    cantidad: Number(producto.cantidad),
-                    unidades: producto.unidades,
-                    precio: Number(producto.precio),
-                    sobro:producto.sobro
-                })
-            } else {
-                // Sumar cantidades y precioes si el sobro ya existe
-                acumuladorSobrasDeProducto.cantidad += Number(producto.cantidad);
-                acumuladorSobrasDeProducto.precio += Number(producto.precio);
-            }
-        }
-    });
-
-    return listaProduccionMensual;
+    }else{
+        throw new Error("Fecha no especificada")
+    }
+    console.log(formatedDate)
+    return formatedDate
 }
 
 
@@ -182,26 +149,130 @@ export function agruparPorMes(productos) {
 
 
 
+export function agruparProdcutos(fechaBuscada,productos) {
+    const listaProduccionMensual = {}
+    
+   
 
-const produccionMensual = agruparPorMes(productosDelCuaderno)['2/25'].productos
-const sobrasMensuales = agruparPorMes(productosDelCuaderno)['2/25'].sobros
+  
+    
 
-// console.log(produccionMensual)
+    productos.forEach((producto) => {
 
-let listaFinal = []
-produccionMensual.forEach((producto)=>{
+        // Inicializa la entrada para el mes si no existe
+        if (!listaProduccionMensual[fechaBuscada]) {
+            listaProduccionMensual[fechaBuscada] = {
+                productos: [],
+                sobras: [],
+            };
+        }
+
+   
+
+        if(producto.fechaInicio.includes(fechaBuscada)){
+
+            
+            let cantidadPaseada = Number(producto.cantidad)
+            let precioParseado = Number(producto.precio)
 
 
-    const targetParaDescontar = sobrasMensuales.find(item => item.nombre === producto.nombre)
+            let dataProductoDelDia = {
+                nombre: producto.productName,
+                cantidad: cantidadPaseada,
+                unidades: producto.unidades,
+                precio: precioParseado,
+                montoProducido:cantidadPaseada*precioParseado,
+                sobro:producto.sobro
+            
+            }
 
-    if(targetParaDescontar){
+                    if (!producto.sobro) {
+                        // Busca el producto existente en el array de productos
+                        //devuelve el producto o undefined (falsy)
+                        const acumuladorMensualDeProducto = listaProduccionMensual[fechaBuscada].productos.find(productoEnLista => 
+                            (productoEnLista.nombre === producto.productName)
+                        )
+                        
+            
+                        if (!acumuladorMensualDeProducto) {
+                            listaProduccionMensual[fechaBuscada].productos.push(dataProductoDelDia)
+                        } else {
+                            // Sumar cantidades y precioes si el producto ya existe
+                            acumuladorMensualDeProducto.cantidad += cantidadPaseada
+                            acumuladorMensualDeProducto.montoProducido += cantidadPaseada*precioParseado
 
-        producto.cantidad -= targetParaDescontar.cantidad
-        producto.precio = producto.cantidad * producto.precio
+                        }
+                    } else {
+                        // Agrega el producto al array de sobras
+                        const acumuladorSobrasDeProducto = listaProduccionMensual[fechaBuscada].sobras.find(s => 
+                            (s.nombre === producto.productName))
+
+                        if (!acumuladorSobrasDeProducto) {
+
+                            listaProduccionMensual[fechaBuscada].sobras.push(dataProductoDelDia)
+
+                        } else {
+                            // Sumar cantidades y precioes si el sobro ya existe
+                            acumuladorSobrasDeProducto.cantidad += cantidadPaseada;
+                            acumuladorSobrasDeProducto.precio += precioParseado;
+                        }
+                    }
+                }
+            });
+
+
+    return listaProduccionMensual
+}
+
+
+
+
+
+export function logicaFiltros(dateInput,listData,filtros){
+    let nuevoRender = []
+
+    const auxDate = splitFecha(dateInput)
+
+    const produccionMensual = agruparProdcutos(auxDate,listData)[auxDate]?.productos || []
+    const sobrasMensuales = agruparProdcutos(auxDate,listData)[auxDate]?.sobras || []
+
+    
+    
+    
+    
+    if (dateInput) {
         
-        listaFinal.push(producto)
+
+        nuevoRender = produccionMensual
+
+    
+
+        if (filtros.sobras) {
+
+            nuevoRender = sobrasMensuales
+            console.log(sobrasMensuales)
+
+
+        } else if (filtros.final) {
+
+            // const nuevoRender = {
+            //     totalProducido:[],
+            //     totalSobrante:[]
+            // }
+            const acumuladorDePlataProducida = produccionMensual.reduce((total,currentValue)=>total + currentValue.montoProducido,0)
+            const acumuladorDeSobras = sobrasMensuales.reduce((total,currentValue)=>total + currentValue.montoProducido,0)
+            console.log(acumuladorDePlataProducida, acumuladorDeSobras)
+            console.log(acumuladorDePlataProducida - acumuladorDeSobras)
+        } else {
+            nuevoRender = produccionMensual
+        }
     }
-})
+
+
+
+    return nuevoRender
+
+}
 
 
 

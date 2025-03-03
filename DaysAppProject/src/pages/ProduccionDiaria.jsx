@@ -1,16 +1,15 @@
 import PropTypes from "prop-types"
 import { Fragment, useCallback, useEffect, useState } from "react"
-import { agruparPorMes, buscarPorFechaDeProduccion } from "../functions/funcionesDeAgrupacionPorFechas.js"
+import {logicaFiltros } from "../functions/funcionesDeAgrupacionPorFechas.js"
 import axios from "axios"
 
 export default function ProduccionDiaria({ serverUrl }) {
-    const [fechaDelInput, setFechaDelInput] = useState('')
-    const [mesSeleccionado, setMesSeleccionado] = useState('')
-    const [produMensual, setProduMensual] = useState([])
-    const [produDiaria, setProduDiaria] = useState([])
+    const [fechaDelInput, setFechaDelInput] = useState('1/1/1')
+
     const [stockData, setStockData] = useState([])
     const [render, setRender] = useState([])
 
+    const [msgTotales, setMsgTotales] = useState('')
     const [filtros, setFiltros] = useState({
         sobras: false,
         final: false
@@ -26,80 +25,36 @@ export default function ProduccionDiaria({ serverUrl }) {
         }
     }, [serverUrl])
 
-    // Maneja el cambio en el input de fecha diaria
-    function handleDate(e) {
-        setMesSeleccionado('') // Limpiar selección mensual
-        const formDate = e.target.value
-        const [year, mes, dia] = formDate.split('-')
-        setFechaDelInput(`${dia}/${mes}/${year}`)
-    }
-
-    // Maneja el cambio en el input de mes
-    function handleMonthofProduction(e) {
-        setFechaDelInput('') // Limpiar selección diaria
-        const [year, month] = e.target.value.split('-')
-        setMesSeleccionado(`${month}/${year}`)
-    }
 
     // Obtiene datos del servidor al montar el componente
-    useEffect(() => {
-        getStockContent()
-    }, [getStockContent])
+    useEffect(() => {getStockContent()}, [getStockContent])
 
-    // Filtra los datos según la fecha seleccionada
-    useEffect(() => {
-        if (stockData.length > 0) {
-            setProduDiaria(buscarPorFechaDeProduccion(fechaDelInput, stockData))
-            setProduMensual(agruparPorMes(stockData, fechaDelInput))
-        }
-    }, [stockData, fechaDelInput])
+
 
     // Manejo de la renderización según filtros y fechas
     useEffect(() => {
 
-        let nuevoRender = []
+        
 
-        const produccionMensual = produMensual[mesSeleccionado]?.productos || []
+        if(fechaDelInput){
+            console.log(fechaDelInput)
+            const nextRender = logicaFiltros(fechaDelInput,stockData,filtros)  
+            console.log(nextRender)
+            // console.log(nextRender.reduce((total,currentValue)=>total + currentValue.montoProducido,0))
+            setRender(nextRender)
 
-        const sobrasMensuales = produMensual[mesSeleccionado]?.sobros || []
-        console.log(produMensual)
-
-        if (produDiaria.length > 0) {
-
-            nuevoRender = produDiaria
-
-        } else if (mesSeleccionado && produccionMensual.length > 0) {
-
-            if (filtros.sobras) {
-
-                nuevoRender = sobrasMensuales
-
-            } else if (filtros.final) {
-
-                nuevoRender = produccionMensual.map((producto) => {
-
-                    const targetParaDescontar = sobrasMensuales.find(item => item.nombre === producto.nombre)
-
-                    return targetParaDescontar
-
-                        ? { ...producto, cantidad: producto.cantidad - targetParaDescontar.cantidad }
-
-                        : producto
-                })
-            } else {
-                nuevoRender = produccionMensual
-            }
+            setMsgTotales(`${nextRender.reduce((total, currentValue) => total + currentValue.montoProducido, 0)}`)
         }
 
 
-        setRender(prevRender => (JSON.stringify(prevRender) === JSON.stringify(nuevoRender) ? prevRender : nuevoRender))
 
 
-    }, [produDiaria, produMensual, mesSeleccionado, filtros])
+
+    }, [fechaDelInput, filtros,stockData])
 
     return (
         <Fragment>
-            <div className="flex flex-row gap-5 items-center">
+            <div className="flex flex-row gap-5 items-center mt-14">
 
                 <div className="flex flex-col items-center">
                     <label htmlFor="fechaBuscada" className="text-white mt-4">Ver por día</label>
@@ -108,7 +63,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                         id="fechaBuscada"
                         className="border border-gray-300 rounded p-2 text-black"
                         required
-                        onChange={handleDate}
+                        onChange={(e)=>setFechaDelInput(e.target.value)}
                     />
                 </div>
 
@@ -118,7 +73,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                         type="month"
                         id="mesSeleccionado"
                         className="border border-gray-300 rounded p-2 text-black"
-                        onChange={handleMonthofProduction}
+                        onChange={(e)=>setFechaDelInput(e.target.value)}
                     />
                 </div>
 
@@ -135,19 +90,17 @@ export default function ProduccionDiaria({ serverUrl }) {
                 </div>
 
             <div className="flex flex-row gap-4 sm:flex-col">
-                {produDiaria.length > 0 && (
-                    <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
-                        Producción total del día ${produDiaria.reduce((total, producto) => {
-                            const sobra = producto.unidades === 'sobro' ? producto.cantidad : 0
-                            return total + ((producto.cantidad - sobra) * producto.precio)
-                        }, 0)}
-                    </div>
-                )}
-
-                {produMensual[mesSeleccionado]?.productos && (
-                    <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
-                        Producción total del mes ${produMensual[mesSeleccionado]?.productos?.reduce((total, producto) => total + producto.cantidad * producto.precio, 0)}
-                    </div>
+            {render.length > 0 && (
+                
+                <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
+                    
+                    {filtros.sobras ? 
+                        `Sobras totales  $${Number(msgTotales).toLocaleString("es-AR")}` 
+                        : 
+                        `Producción total $${Number(msgTotales).toLocaleString("es-AR")}`
+                    }
+                    
+                </div>
                 )}
             </div>
 
@@ -163,7 +116,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                     <div key={index} className="flex justify-between items-center border border-gray-300 px-4 py-2">
                         <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
                         <p className="w-1/4 text-center">{item.sobro ? `${item.cantidad} ${item.unidades}`: item.cantidad}</p>
-                        <p className="w-1/4 text-center">{item.sobro ? 'sobro': item.unidades}</p>
+                        <p className="w-1/4 text-center overflow-hidden">{item.sobro ? 'sobro': item.unidades}</p>
                         <p className="w-1/4 text-center">{item.precio ? `$${Math.round(item.precio * item.cantidad)}` : ""}</p>
                     </div>
                 ))}

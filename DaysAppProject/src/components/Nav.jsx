@@ -17,7 +17,7 @@ export default function Nav(){
     
     return(
         <Fragment>
-            <nav className="self-start fixed flex flex-col   z-10 sm:min-w-screen h-full ">
+            <nav className="self-start fixed flex flex-col z-10 h-full sm:min-w-screen  ">
 
                 {menu ? (
                 <div className="h-screen flex flex-col justify-evenly bg-orange-600 ">
