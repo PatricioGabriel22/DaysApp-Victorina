@@ -79,9 +79,9 @@ export default function ProduccionDiaria({ serverUrl }) {
 
             </div>
                 <div className="flex flex-col pt-4 gap-6">
-                    <label>
-                        <input type="checkbox" checked={filtros.sobras} onChange={() => setFiltros(prev => ({ ...prev, sobras: !prev.sobras }))} />
-                        Sobras
+                    <label className="items-center p-2">
+                        <input  type="checkbox" checked={filtros.sobras} onChange={() => setFiltros(prev => ({ ...prev, sobras: !prev.sobras }))} />
+                        Ver sobras
                     </label>
                     {/* <label>
                         <input type="checkbox" checked={filtros.final} onChange={() => setFiltros(prev => ({ ...prev, final: !prev.final }))} />
@@ -104,7 +104,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                 )}
             </div>
 
-            <div className="bg-white w-screen md:w-[600px] p-1 rounded text-black m-5">
+            <div className="bg-white w-screen md:w-[600px] p-1 rounded text-black m-5 overflow-hidden">
                 <div className="flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
                     <p className="w-1/4 text-center">Producto</p>
                     <p className="w-1/4 text-center">Cantidad</p>
@@ -113,11 +113,11 @@ export default function ProduccionDiaria({ serverUrl }) {
                 </div>
 
                 {render.length > 0 && render.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center border border-gray-300 px-4 py-2">
+                    <div key={index} className="flex justify-between items-center border border-gray-300 px-4 py-2 ">
                         <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
-                        <p className="w-1/4 text-center">{item.sobro ? `${item.cantidad} ${item.unidades}`: item.cantidad}</p>
-                        <p className="w-1/4 text-center overflow-hidden">{item.sobro ? 'sobro': item.unidades}</p>
-                        <p className="w-1/4 text-center">{item.precio ? `$${Math.round(item.precio * item.cantidad)}` : ""}</p>
+                        <p className="w-1/4 text-center ">{item.cantidad}</p>
+                        <p className="w-1/4 text-center">{item.unidades}</p>
+                        <p className="w-1/4 text-center">{`$${Math.round(item.precio * item.cantidad).toLocaleString("es-AR")}`}</p>
                     </div>
                 ))}
             </div>
