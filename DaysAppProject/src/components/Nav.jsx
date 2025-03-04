@@ -28,7 +28,7 @@ export default function Nav(){
                     <Link to="/" className=" flex items-center p-4 hover:bg-black w-full mt-7" onClick={()=>(setMenu(!menu))}>
                     <CiClock1 size={50}/>Control de dias</Link>
 
-                    <Link to="/produccion-diaria" className=" flex items-center p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
+                    <Link to="/produccion-diaria" className=" flex items-center w-full p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
                     <GiCook size={50} />Produccion</Link>
 
                     </div>
