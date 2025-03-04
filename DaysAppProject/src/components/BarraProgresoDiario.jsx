@@ -193,7 +193,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
     
             </div> 
 
-              <div className="flex flex-row gap-2 justify-start w-full">
+              <div className="flex flex-row gap-5 justify-center w-full">
                 
                 <RiDeleteBinLine size={50} className=" text-red-500" onClick={deleteProduct}/>
                 
@@ -202,12 +202,12 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
                 
 
                 {
-                  (allDataCopy.revisado === false) ? (
+                  // (allDataCopy.revisado === true) ? (
                   
-                    <button className="ml-auto bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
+                  //   <button className=" bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
                 
                       
-                  ) :""
+                  // ) :""
                 }
               </div>
               
