@@ -3,12 +3,14 @@ import fs from 'fs';
 import days from 'dayjs';
 // import { BotWpp } from './BotWpp.js';
 import { DB_PASSWORD, DB_NAME } from './config/envStuff.js';
+import { connectDB } from './DB.js';
 
 const LOG_FILE = "lastRunDate.txt";
 
 async function CronBackgroundWorker() {
     try {
-        console.log("Ejecutando worker.js...");
+        console.log("Ejecutando NodeCronWorker.js...");
+        connectDB()
 
         // 🔹 Leer la última fecha de ejecución guardada
         let lastRunDate = null;
@@ -27,12 +29,13 @@ async function CronBackgroundWorker() {
         // 🔹 Guardar la nueva fecha de ejecución antes de continuar
         fs.writeFileSync(LOG_FILE, hoy, "utf-8");
 
-        const productos = await productoSchema.find();
+        const productos = await productoSchema.find({});
+       
 
         for (const item of productos) {
-            const diaCreacion = days(item.horaInicial);
+            const diaCreacion = days(item.fechaInicio);
             const tiempoTranscurrido = days().diff(diaCreacion, "days");
-
+            
             if (tiempoTranscurrido > 0) {
                 await productoSchema.findOneAndUpdate(
                     { productName: item.productName, fechaInicio: item.fechaInicio },
@@ -50,9 +53,6 @@ async function CronBackgroundWorker() {
             }
         }
 
-        const productosArevisar = productos.filter(
-            (producto) => producto.dias.length >= 6 || (producto.dias.length % 3 === 0 && producto.dias.length > 6)
-        );
 
         // BotWpp(productosArevisar);
 

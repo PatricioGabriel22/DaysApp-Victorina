@@ -198,7 +198,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
                 <RiDeleteBinLine size={50} className=" text-red-500" onClick={deleteProduct}/>
                 
                 <RiEditLine  size={50} className="text-sky-500 " onClick={editProduct}/>
-                <button className="bg-white text-black rounded-full w-20" onClick={aumentarDia}>aumentar dia</button>
+                {/* <button className="bg-white text-black rounded-full w-20" onClick={aumentarDia}>aumentar dia</button> */}
                 
 
                 {

@@ -3,7 +3,7 @@
     "start":"npm run db",
     "test": "cross-env TEST=true nodemon src/server.js",
     "db": "cross-env TEST=false nodemon src/server.js",
-    "cron": "cross-env TEST=false nodemon src/worker.js",
+    "cron": "cross-env TEST=false nodemon src/NodeCronWorker.js",
     "wpp": "node src/BotWpp.js",
     "bakup": "node src/restoreTool.js"
   },

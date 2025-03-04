@@ -26,7 +26,7 @@ export default function Nav(){
                     <div className="flex flex-col items-center flex-grow gap-20">
 
                     <Link to="/" className=" flex items-center p-4 hover:bg-black w-full mt-7" onClick={()=>(setMenu(!menu))}>
-                    <CiClock1 size={50}/>Days App</Link>
+                    <CiClock1 size={50}/>Control de dias</Link>
 
                     <Link to="/produccion-diaria" className=" flex items-center p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
                     <GiCook size={50} />Produccion</Link>
