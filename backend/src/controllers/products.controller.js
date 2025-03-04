@@ -148,7 +148,7 @@ export const eliminarProducto = async(req,res)=>{
 
         await Promise.all([
 
-            stockSchema.deleteOne({productName:productName, fechaInicio:fechaInicio}),
+            // stockSchema.deleteOne({productName:productName, fechaInicio:fechaInicio}),
             productoDaysAppSchema.deleteOne({productName:productName, fechaInicio:fechaInicio})
         ])
         

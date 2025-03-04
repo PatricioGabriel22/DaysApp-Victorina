@@ -23,7 +23,6 @@ async function CronBackgroundWorker() {
         // ✅ Verificar si ya se ejecutó hoy
         if (lastRunDate === hoy) {
             console.log("El script ya se ejecutó hoy. No se hará nada.");
-            process.exit(0)
             return;
         }
 
