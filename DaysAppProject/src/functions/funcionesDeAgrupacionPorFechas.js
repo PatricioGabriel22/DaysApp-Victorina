@@ -172,16 +172,16 @@ export function agruparProdcutos(fechaBuscada,productos) {
         if(producto.fechaInicio.includes(fechaBuscada)){
 
             
-            let cantidadPaseada = Number(producto.cantidad)
-            let precioParseado = Number(producto.precio)
-
+            let cantidadPaseada = Number(producto.cantidad.toFixed(2))
+            let precioParseado = Number(producto.precio.toFixed(2))
+            let montoParseado = Number((cantidadPaseada*precioParseado).toFixed(2))
 
             let dataProductoDelDia = {
                 nombre: producto.productName,
                 cantidad: cantidadPaseada,
                 unidades: producto.unidades,
                 precio: precioParseado,
-                montoProducido:cantidadPaseada*precioParseado,
+                montoProducido:montoParseado,
                 sobro:producto.sobro
             
             }
@@ -199,7 +199,7 @@ export function agruparProdcutos(fechaBuscada,productos) {
                         } else {
                             // Sumar cantidades y precioes si el producto ya existe
                             acumuladorMensualDeProducto.cantidad += cantidadPaseada
-                            acumuladorMensualDeProducto.montoProducido += cantidadPaseada*precioParseado
+                            acumuladorMensualDeProducto.montoProducido += montoParseado
 
                         }
                     } else {
@@ -213,8 +213,9 @@ export function agruparProdcutos(fechaBuscada,productos) {
 
                         } else {
                             // Sumar cantidades y precioes si el sobro ya existe
-                            acumuladorSobrasDeProducto.cantidad += cantidadPaseada;
-                            acumuladorSobrasDeProducto.precio += precioParseado;
+                            acumuladorSobrasDeProducto.cantidad += cantidadPaseada
+                            acumuladorSobrasDeProducto.montoProducido += montoParseado
+                           
                         }
                     }
                 }

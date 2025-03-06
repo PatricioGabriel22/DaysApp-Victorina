@@ -33,24 +33,22 @@ async function CronBackgroundWorker() {
        
 
         for (const item of productos) {
-            const diaCreacion = days(item.fechaInicio);
-            const tiempoTranscurrido = days().diff(diaCreacion, "days");
-            
-            if (tiempoTranscurrido > 0) {
+
+           
+            await productoSchema.findOneAndUpdate(
+                { productName: item.productName, fechaInicio: item.fechaInicio },
+                { $push: { dias: item.dias.length + 1 } },
+                { upsert: true }
+            )
+
+            if (item.dias.length >= 6 || (item.dias.length % 3 === 0 && item.dias.length > 6)) {
                 await productoSchema.findOneAndUpdate(
                     { productName: item.productName, fechaInicio: item.fechaInicio },
-                    { $push: { dias: item.dias.length + 1 } },
+                    { revisado: !item.revisado },
                     { upsert: true }
                 );
-
-                if (item.dias.length >= 6 || (item.dias.length % 3 === 0 && item.dias.length > 6)) {
-                    await productoSchema.findOneAndUpdate(
-                        { productName: item.productName, fechaInicio: item.fechaInicio },
-                        { revisado: !item.revisado },
-                        { upsert: true }
-                    );
-                }
             }
+            
         }
 
 

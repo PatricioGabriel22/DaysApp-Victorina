@@ -117,7 +117,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                         <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
                         <p className="w-1/4 text-center ">{item.cantidad}</p>
                         <p className="w-1/4 text-center">{item.unidades}</p>
-                        <p className="w-1/4 text-center">{`$${Math.round(item.precio * item.cantidad).toLocaleString("es-AR")}`}</p>
+                        <p className="w-1/4 text-center">{`$${item.montoProducido.toLocaleString("es-AR")}`}</p>
                     </div>
                 ))}
             </div>

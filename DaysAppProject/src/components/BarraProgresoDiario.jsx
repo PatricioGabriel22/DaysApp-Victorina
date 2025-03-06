@@ -202,12 +202,12 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
                 
 
                 {
-                  // (allDataCopy.revisado === true) ? (
+                  (allDataCopy.revisado === false) ? (
                   
-                  //   <button className=" bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
+                    <button className=" bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
                 
                       
-                  // ) :""
+                  ) :""
                 }
               </div>
               
