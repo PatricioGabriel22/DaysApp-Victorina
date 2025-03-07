@@ -154,9 +154,6 @@ export function agruparProdcutos(fechaBuscada,productos) {
     
    
 
-  
-    
-
     productos.forEach((producto) => {
 
         // Inicializa la entrada para el mes si no existe
@@ -168,59 +165,34 @@ export function agruparProdcutos(fechaBuscada,productos) {
         }
 
    
-
-        if(producto.fechaInicio.includes(fechaBuscada)){
-
-            
-            let cantidadPaseada = Number(producto.cantidad.toFixed(2))
-            let precioParseado = Number(producto.precio.toFixed(2))
-            let montoParseado = Number((cantidadPaseada*precioParseado).toFixed(2))
-
+        if (producto.fechaInicio.includes(fechaBuscada)) {
+            let cantidadPaseada = Math.round(producto.cantidad * 100) / 100
+            let precioParseado = Math.round(producto.precio * 100) / 100
+            let montoParseado = Math.round(cantidadPaseada * precioParseado * 100) / 100
+        
             let dataProductoDelDia = {
                 nombre: producto.productName,
                 cantidad: cantidadPaseada,
                 unidades: producto.unidades,
                 precio: precioParseado,
-                montoProducido:montoParseado,
-                sobro:producto.sobro
-            
+                montoProducido: montoParseado,
+                sobro: producto.sobro
+            };
+        
+            let listaObjetivo = producto.sobro 
+                ? listaProduccionMensual[fechaBuscada].sobras 
+                : listaProduccionMensual[fechaBuscada].productos;
+        
+            let acumulador = listaObjetivo.find(prodcutoListaObjetivo => prodcutoListaObjetivo.nombre === producto.productName);
+        
+            if (acumulador) {
+                acumulador.cantidad += cantidadPaseada;
+                acumulador.montoProducido += montoParseado;
+            } else {
+                listaObjetivo.push(dataProductoDelDia);
             }
-
-                    if (!producto.sobro) {
-                        // Busca el producto existente en el array de productos
-                        //devuelve el producto o undefined (falsy)
-                        const acumuladorMensualDeProducto = listaProduccionMensual[fechaBuscada].productos.find(productoEnLista => 
-                            (productoEnLista.nombre === producto.productName)
-                        )
-                        
-            
-                        if (!acumuladorMensualDeProducto) {
-                            listaProduccionMensual[fechaBuscada].productos.push(dataProductoDelDia)
-                        } else {
-                            // Sumar cantidades y precioes si el producto ya existe
-                            acumuladorMensualDeProducto.cantidad += cantidadPaseada
-                            acumuladorMensualDeProducto.montoProducido += montoParseado
-
-                        }
-                    } else {
-                        // Agrega el producto al array de sobras
-                        const acumuladorSobrasDeProducto = listaProduccionMensual[fechaBuscada].sobras.find(s => 
-                            (s.nombre === producto.productName))
-
-                        if (!acumuladorSobrasDeProducto) {
-
-                            listaProduccionMensual[fechaBuscada].sobras.push(dataProductoDelDia)
-
-                        } else {
-                            // Sumar cantidades y precioes si el sobro ya existe
-                            acumuladorSobrasDeProducto.cantidad += cantidadPaseada
-                            acumuladorSobrasDeProducto.montoProducido += montoParseado
-                           
-                        }
-                    }
-                }
-            });
-
+        }
+    })
 
     return listaProduccionMensual
 }

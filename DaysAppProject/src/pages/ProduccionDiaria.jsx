@@ -115,7 +115,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                 {render.length > 0 && render.map((item, index) => (
                     <div key={index} className="flex justify-between items-center border border-gray-300 px-4 py-2 ">
                         <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
-                        <p className="w-1/4 text-center ">{item.cantidad}</p>
+                        <p className="w-1/4 text-center ">{item.cantidad.toFixed(2)}</p>
                         <p className="w-1/4 text-center">{item.unidades}</p>
                         <p className="w-1/4 text-center">{`$${item.montoProducido.toLocaleString("es-AR")}`}</p>
                     </div>
