@@ -17,10 +17,10 @@ export default function Nav(){
     
     return(
         <Fragment>
-            <nav className="self-start absolute flex flex-col">
+            <nav className="self-start absolute flex flex-col z-50">
 
                 {menu ? (
-                <div className="h-screen flex-col justify-evenly bg-orange-600 ">
+                <div className="h-screen justify-evenly bg-orange-600 ">
                     <RxCross1 size={20} className="m-4 w-full" onClick={()=>(setMenu(!menu))}/>
 
                     <div className="flex flex-col items-center  w-full gap-20">
