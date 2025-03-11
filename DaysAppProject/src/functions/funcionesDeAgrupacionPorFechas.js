@@ -1,97 +1,97 @@
-const productosDelCuaderno = [
-    {
-        productName:"Budín naranja",
-        cantidad:7,
-        unidades:"unidades",
-        fechaInicio:"12/2/25",
-        precio:3,
-        sobro:false
-    },
-    {
-        productName:"Pan",
-        cantidad:10,
-        unidades:"Kilos",
-        fechaInicio:"12/2/25",
-        precio:3,
-        sobro:true
-    },
-    {
-        productName:"Budín naranja",
-        cantidad:1,
-        precio:3,
-        unidades:"unidades",
-        fechaInicio:"12/2/25",
-        sobro:false
-    },
-    {
-        productName:"Pan",
-        cantidad:2,
-        fechaInicio:"1/2/25",
-        unidades:"Kilos",
-        precio:3,
-        sobro:false
-    },
-    {
-        productName:"Pan 2",
-        cantidad:0.45,
+// const productosDelCuaderno = [
+//     {
+//         productName:"Budín naranja",
+//         cantidad:7,
+//         unidades:"unidades",
+//         fechaInicio:"12/2/25",
+//         precio:3,
+//         sobro:false
+//     },
+//     {
+//         productName:"Pan",
+//         cantidad:10,
+//         unidades:"Kilos",
+//         fechaInicio:"12/2/25",
+//         precio:3,
+//         sobro:true
+//     },
+//     {
+//         productName:"Budín naranja",
+//         cantidad:1,
+//         precio:3,
+//         unidades:"unidades",
+//         fechaInicio:"12/2/25",
+//         sobro:false
+//     },
+//     {
+//         productName:"Pan",
+//         cantidad:2,
+//         fechaInicio:"1/2/25",
+//         unidades:"Kilos",
+//         precio:3,
+//         sobro:false
+//     },
+//     {
+//         productName:"Pan 2",
+//         cantidad:0.45,
        
-        fechaInicio:"1/5/25"
-    },
-    {
-        productName:"salvado",
-        cantidad:9,
-        unidades:"kilos",
-        fechaInicio:"14/2/25"
-    },
-    {
-        productName:"salvado",
-        cantidad:10,
-        unidades:"kilos",
-        fechaInicio:"18/2/25"
-    },
-    {
-        productName:"Brownie Grande",
-        cantidad:7,
-        unidades:"unidades",
-        fechaInicio:"14/2/25"
-    },
-    {
-        productName:"Brownie Frutos rojos",
-        cantidad:7,
-        unidades:"unidades",
-        fechaInicio:"12/5/25"
-    },
-    {
-        productName:"Bizcochos",
-        cantidad:7,
-        unidades:"unidades",
-        fechaInicio:"19/1/25"
-    },
-    {
-        productName:"Minion",
-        cantidad:7,
+//         fechaInicio:"1/5/25"
+//     },
+//     {
+//         productName:"salvado",
+//         cantidad:9,
+//         unidades:"kilos",
+//         fechaInicio:"14/2/25"
+//     },
+//     {
+//         productName:"salvado",
+//         cantidad:10,
+//         unidades:"kilos",
+//         fechaInicio:"18/2/25"
+//     },
+//     {
+//         productName:"Brownie Grande",
+//         cantidad:7,
+//         unidades:"unidades",
+//         fechaInicio:"14/2/25"
+//     },
+//     {
+//         productName:"Brownie Frutos rojos",
+//         cantidad:7,
+//         unidades:"unidades",
+//         fechaInicio:"12/5/25"
+//     },
+//     {
+//         productName:"Bizcochos",
+//         cantidad:7,
+//         unidades:"unidades",
+//         fechaInicio:"19/1/25"
+//     },
+//     {
+//         productName:"Minion",
+//         cantidad:7,
        
-        fechaInicio:"19/1/25"
-    },
-    {
-        productName:"Minion",
-        cantidad:3,
+//         fechaInicio:"19/1/25"
+//     },
+//     {
+//         productName:"Minion",
+//         cantidad:3,
        
-        fechaInicio:"19/1/25"
-    },    {
-        productName:"Figasas",
-        cantidad:3,
+//         fechaInicio:"19/1/25"
+//     },    {
+//         productName:"Figasas",
+//         cantidad:3,
        
-        fechaInicio:"19/1/25"
-    },
+//         fechaInicio:"19/1/25"
+//     },
 
-    {
-        productName:"Minion",
-        cantidad:777,
-        unidades:"kilos",
-        fechaInicio:"19/1/25"
-    },
-]
+//     {
+//         productName:"Minion",
+//         cantidad:777,
+//         unidades:"kilos",
+//         fechaInicio:"19/1/25"
+//     },
+// ]
 
 
 
@@ -108,8 +108,6 @@ export function buscarPorFechaDeProduccion(fechaDeProduccion,listaProductos){
     
     listaProductos.forEach((producto)=> {
         if(producto.fechaInicio === fechaDeProduccion){
-
-            console.log(producto.productName)
             producido.push(producto)
         }
     })
@@ -118,12 +116,11 @@ export function buscarPorFechaDeProduccion(fechaDeProduccion,listaProductos){
 
 
 
-function splitFecha(fecha){
+export function splitFecha(fecha){
 
     let formatedDate = ''
     const splitedDate = fecha.includes('-') ? fecha.split('-') : fecha.split('/')
 
-    console.log(splitedDate)
 
     if(splitedDate.length === 3){
         
@@ -140,7 +137,6 @@ function splitFecha(fecha){
     }else{
         throw new Error("Fecha no especificada")
     }
-    console.log(formatedDate)
     return formatedDate
 }
 
@@ -160,13 +156,14 @@ export function agruparProdcutos(fechaBuscada,productos) {
         if (!listaProduccionMensual[fechaBuscada]) {
             listaProduccionMensual[fechaBuscada] = {
                 productos: [],
-                sobras: [],
+                sobras: []
+                
             };
         }
 
    
         if (producto.fechaInicio.includes(fechaBuscada)) {
-            let cantidadPaseada = Math.round(producto.cantidad * 100) / 100
+            let cantidadPaseada = producto.cantidad 
             let precioParseado = Math.round(producto.precio * 100) / 100
             let montoParseado = Math.round(cantidadPaseada * precioParseado * 100) / 100
         
@@ -177,6 +174,8 @@ export function agruparProdcutos(fechaBuscada,productos) {
                 precio: precioParseado,
                 montoProducido: montoParseado,
                 sobro: producto.sobro
+                
+                
             };
         
             let listaObjetivo = producto.sobro 
@@ -204,10 +203,9 @@ export function agruparProdcutos(fechaBuscada,productos) {
 export function logicaFiltros(dateInput,listData,filtros){
     let nuevoRender = []
 
-    const auxDate = splitFecha(dateInput)
 
-    const produccionMensual = agruparProdcutos(auxDate,listData)[auxDate]?.productos || []
-    const sobrasMensuales = agruparProdcutos(auxDate,listData)[auxDate]?.sobras || []
+    const produccionMensual = agruparProdcutos(dateInput,listData)[dateInput]?.productos || []
+    const sobrasMensuales = agruparProdcutos(dateInput,listData)[dateInput]?.sobras || []
 
     
     
@@ -223,7 +221,6 @@ export function logicaFiltros(dateInput,listData,filtros){
         if (filtros.sobras) {
 
             nuevoRender = sobrasMensuales
-            console.log(sobrasMensuales)
 
 
         } else if (filtros.final) {

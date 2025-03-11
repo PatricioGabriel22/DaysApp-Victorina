@@ -29,7 +29,7 @@ productsRouter.post("/new",crearNuevo)
 
 productsRouter.put('/sumarDia',sumarDia)
 productsRouter.put('/revisado',revisado)
-productsRouter.put('/eliminarProducto',eliminarProducto)
+productsRouter.put('/eliminarProducto/:erease?/',eliminarProducto)
 
 
 productsRouter.put('/editarProducto',editarProducto)

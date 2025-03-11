@@ -17,19 +17,19 @@ export default function Nav(){
     
     return(
         <Fragment>
-            <nav className="self-start fixed flex flex-col  h-full sm:min-w-screen  ">
+            <nav className="self-start absolute flex flex-col">
 
                 {menu ? (
-                <div className="h-screen flex flex-col justify-evenly bg-orange-600 ">
+                <div className="h-screen flex-col justify-evenly bg-orange-600 ">
                     <RxCross1 size={20} className="m-4 w-full" onClick={()=>(setMenu(!menu))}/>
 
-                    <div className="flex flex-col items-center flex-grow gap-20">
+                    <div className="flex flex-col items-center  w-full gap-20">
 
-                    <Link to="/" className=" flex items-center p-4 hover:bg-black w-full mt-7" onClick={()=>(setMenu(!menu))}>
-                    <CiClock1 size={50}/>Control de dias</Link>
+                        <Link to="/" className=" flex  items-center p-4 hover:bg-black mt-7" onClick={()=>(setMenu(!menu))}>
+                        <CiClock1 size={50}/>Control de dias</Link>
 
-                    <Link to="/produccion-diaria" className=" flex items-center w-full p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
-                    <GiCook size={50} />Produccion</Link>
+                        <Link to="/produccion-diaria" className=" flex w-full items-center p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
+                        <GiCook size={50} />Produccion</Link>
 
                     </div>
                 </div>):

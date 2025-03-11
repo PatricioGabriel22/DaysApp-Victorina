@@ -1,10 +1,17 @@
 import PropTypes from "prop-types"
 import { Fragment, useCallback, useEffect, useState } from "react"
-import {logicaFiltros } from "../functions/funcionesDeAgrupacionPorFechas.js"
+import {logicaFiltros, splitFecha } from "../functions/funcionesDeAgrupacionPorFechas.js"
 import axios from "axios"
+
+import { RiDeleteBinLine } from "react-icons/ri";
+
+
+
 
 export default function ProduccionDiaria({ serverUrl }) {
     const [fechaDelInput, setFechaDelInput] = useState('1/1/1')
+    const [auxFecha, setAuxFecha] = useState('')
+
 
     const [stockData, setStockData] = useState([])
     const [render, setRender] = useState([])
@@ -15,6 +22,9 @@ export default function ProduccionDiaria({ serverUrl }) {
         final: false
     })
 
+    const [tick,setTick] = useState([])
+    const [deleteTick,setDeleteTick] = useState(false)
+
     // Obtiene los productos desde el servidor
     const getStockContent = useCallback(async () => {
         try {
@@ -24,6 +34,69 @@ export default function ProduccionDiaria({ serverUrl }) {
             console.error("Error al obtener datos:", error)
         }
     }, [serverUrl])
+
+
+    const handleTick = useCallback(async(event,item)=>{
+
+        console.log(tick)
+
+        if(event.target.checked){
+            
+            setTick([...tick,item])
+            
+            setDeleteTick(true)
+
+
+        } else {
+            setDeleteTick(false)
+            
+
+            setTick(tick.filter(tickedItem=> tickedItem.nombre !== item.nombre ))
+
+        }
+
+
+        
+            
+
+
+        },[tick])
+
+    const handleFecha = useCallback((e)=>{
+
+        setFechaDelInput(e.target.value)
+        setAuxFecha(splitFecha(e.target.value))
+
+
+    },[])
+
+
+    const deleteTickedItems = useCallback(async()=>{
+
+
+        if(tick.length>0 && deleteTick){
+        
+            for(const thickedItem of tick){
+
+                try {
+                    axios.put(`${serverUrl}/eliminarProducto/${thickedItem.nombre}`,{
+                        dateToFilter: auxFecha
+                    })
+                    .then(getStockContent).then(setDeleteTick(false))
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+
+        }else{
+            
+            console.log("Nada para eliminar")
+        }
+        
+
+    },[auxFecha,deleteTick,tick,serverUrl,getStockContent])
+
 
 
     // Obtiene datos del servidor al montar el componente
@@ -37,20 +110,20 @@ export default function ProduccionDiaria({ serverUrl }) {
         
 
         if(fechaDelInput){
-            console.log(fechaDelInput)
-            const nextRender = logicaFiltros(fechaDelInput,stockData,filtros)  
-            console.log(nextRender)
+            
+            const nextRender = logicaFiltros(auxFecha,stockData,filtros)  
+            
             // console.log(nextRender.reduce((total,currentValue)=>total + currentValue.montoProducido,0))
             setRender(nextRender)
-
             setMsgTotales(`${nextRender.reduce((total, currentValue) => total + currentValue.montoProducido, 0)}`)
         }
 
 
+    }, [fechaDelInput,auxFecha, filtros,stockData,tick,deleteTick])
 
 
-
-    }, [fechaDelInput, filtros,stockData])
+        
+    
 
     return (
         <Fragment>
@@ -63,7 +136,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                         id="fechaBuscada"
                         className="border border-gray-300 rounded p-2 text-black"
                         required
-                        onChange={(e)=>setFechaDelInput(e.target.value)}
+                        onChange={(e)=>handleFecha(e)}
                     />
                 </div>
 
@@ -73,14 +146,21 @@ export default function ProduccionDiaria({ serverUrl }) {
                         type="month"
                         id="mesSeleccionado"
                         className="border border-gray-300 rounded p-2 text-black"
-                        onChange={(e)=>setFechaDelInput(e.target.value)}
+                        onChange={(e)=>handleFecha(e)}
                     />
                 </div>
 
             </div>
                 <div className="flex flex-col pt-4 gap-6">
                     <label className="items-center p-2">
-                        <input  type="checkbox" checked={filtros.sobras} onChange={() => setFiltros(prev => ({ ...prev, sobras: !prev.sobras }))} />
+                        <input  type="checkbox" checked={filtros.sobras} 
+                        onChange={() => {
+                            setFiltros(prev => ({ ...prev, sobras: !prev.sobras }));
+                            setDeleteTick(false);
+                            setTick([]);
+                        }}
+                        
+                        />
                         Ver sobras
                     </label>
                     {/* <label>
@@ -105,7 +185,11 @@ export default function ProduccionDiaria({ serverUrl }) {
             </div>
 
             <div className="bg-white w-screen md:w-[600px] p-1 rounded text-black m-5 overflow-hidden">
-                <div className="flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
+                <div className="relative flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
+                    {deleteTick ? (
+                        <RiDeleteBinLine color={'red'} size={29} className="absolute left-1 " onClick={deleteTickedItems}/>
+                    ) : ("")}
+                    
                     <p className="w-1/4 text-center">Producto</p>
                     <p className="w-1/4 text-center">Cantidad</p>
                     <p className="w-1/4 text-center">Unidades</p>
@@ -113,13 +197,31 @@ export default function ProduccionDiaria({ serverUrl }) {
                 </div>
 
                 {render.length > 0 && render.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center border border-gray-300 px-4 py-2 ">
-                        <p className="w-1/4 text-center">{item.nombre || item.productName}</p>
-                        <p className="w-1/4 text-center ">{item.cantidad.toFixed(2)}</p>
-                        <p className="w-1/4 text-center">{item.unidades}</p>
-                        <p className="w-1/4 text-center">{`$${item.montoProducido.toLocaleString("es-AR")}`}</p>
+
+                    <div key={index}  className="flex flex-col">
+                        
+                        
+                        <div key={index} className={`flex justify-between items-center border border-gray-300 px-4 py-2 
+                                ${tick.some(t => t.nombre === item.nombre) ? `bg-red-700`:""}`}>
+                            <input type='checkbox'  onChange={(e)=>handleTick(e,item)}/>
+                            <p className="w-1/4 text-center">{item.nombre}</p>
+                            <p className="w-1/4 text-center ">{item.cantidad}</p>
+                            <p className="w-1/4 text-center">{item.unidades}</p>
+                            <p className="w-1/4 text-center">{`$${item.montoProducido.toLocaleString("es-AR")}`}</p>
+
+
+
+                        </div>
+
+
+                        
+                        
                     </div>
+
                 ))}
+
+
+
             </div>
         </Fragment>
     )

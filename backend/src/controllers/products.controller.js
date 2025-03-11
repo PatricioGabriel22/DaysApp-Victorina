@@ -142,13 +142,17 @@ export const revisado = async(req,res)=>{
 }
 
 export const eliminarProducto = async(req,res)=>{
-    const {productName,fechaInicio} = req.body
-    console.log(req.body)
+    const {productName,fechaInicio,dateToFilter} = req.body
+    const {erease} = req.params
+
+    console.log(req.params,dateToFilter)
+    
     try{
 
         await Promise.all([
 
-            // stockSchema.deleteOne({productName:productName, fechaInicio:fechaInicio}),
+
+            stockSchema.deleteOne({productName:erease, fechaInicio:dateToFilter}),
             productoDaysAppSchema.deleteOne({productName:productName, fechaInicio:fechaInicio})
         ])
         
