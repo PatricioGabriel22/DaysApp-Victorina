@@ -205,7 +205,7 @@ export default function ProduccionDiaria({ serverUrl }) {
                                 ${tick.some(t => t.nombre === item.nombre) ? `bg-red-700`:""}`}>
                             <input type='checkbox'  onChange={(e)=>handleTick(e,item)}/>
                             <p className="w-1/4 text-center">{item.nombre}</p>
-                            <p className="w-1/4 text-center ">{item.cantidad}</p>
+                            <p className="w-1/4 text-center ">{item.cantidad.toLocaleString("es-AR")}</p>
                             <p className="w-1/4 text-center">{item.unidades}</p>
                             <p className="w-1/4 text-center">{`$${item.montoProducido.toLocaleString("es-AR")}`}</p>
 
