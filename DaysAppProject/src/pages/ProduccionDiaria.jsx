@@ -181,10 +181,10 @@ export default function ProduccionDiaria({ serverUrl }) {
                 )}
             </div>
 
-            <div className="bg-white w-screen md:w-[600px] p-1 rounded text-black m-5 overflow-hidden">
-                <div className="relative flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
-                    {deleteTick ? (
-                        <RiDeleteBinLine color={'red'} size={29} className="absolute left-1 " onClick={deleteTickedItems}/>
+            <div className="bg-white relative w-screen  md:w-[600px] p-1 rounded text-black m-5 overflow-hidden">
+                <div className=" flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
+                {deleteTick ? (
+                        <RiDeleteBinLine color={'red'} size={30} onClick={deleteTickedItems}/>
                     ) : ("")}
                     
                     <p className="w-1/4 text-center">Producto</p>
