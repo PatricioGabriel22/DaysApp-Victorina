@@ -10,7 +10,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 export default function ProduccionDiaria({ serverUrl }) {
     const [fechaDelInput, setFechaDelInput] = useState('1/1/1')
-    const [auxFecha, setAuxFecha] = useState('')
+    const [auxFecha, setAuxFecha] = useState('1/1/1')
 
 
     const [stockData, setStockData] = useState([])
@@ -38,7 +38,7 @@ export default function ProduccionDiaria({ serverUrl }) {
 
     const handleTick = useCallback(async(event,item)=>{
 
-        console.log(tick)
+       
 
         if(event.target.checked){
             
@@ -55,16 +55,13 @@ export default function ProduccionDiaria({ serverUrl }) {
 
         }
 
-
         
-            
 
-
-        },[tick])
+    },[tick])
 
     const handleFecha = useCallback((e)=>{
 
-        setFechaDelInput(e.target.value)
+        setFechaDelInput(e.target.value || '1/1/1')
         setAuxFecha(splitFecha(e.target.value))
 
 
@@ -203,7 +200,10 @@ export default function ProduccionDiaria({ serverUrl }) {
                         
                         <div key={index} className={`flex justify-between items-center border border-gray-300 px-4 py-2 
                                 ${tick.some(t => t.nombre === item.nombre) ? `bg-red-700`:""}`}>
-                            <input type='checkbox'  onChange={(e)=>handleTick(e,item)}/>
+                            {auxFecha.length === 10 ? (
+                                 <input type='checkbox'  onChange={(e)=>handleTick(e,item)}/>
+                            ):("")}
+                           
                             <p className="w-1/4 text-center">{item.nombre}</p>
                             <p className="w-1/4 text-center ">{item.cantidad.toLocaleString("es-AR")}</p>
                             <p className="w-1/4 text-center">{item.unidades}</p>
