@@ -7,7 +7,16 @@ const absolutePath = path.resolve('src/config/.env')
 console.log(absolutePath)
 dotenv.config({path: absolutePath});
 
-export const {MONGO_CLUSTER_URI,TEST,DB_PASSWORD,DB_NAME} = process.env
+export const {
+    MONGO_CLUSTER_URI,
+    TEST,
+    DB_PASSWORD,
+    DB_NAME,
+    SALT_ROUNDS,
+    SECRET_JWT_KEY
+
+
+} = process.env
 
 
 

@@ -23,7 +23,8 @@ const stockSchema = new mongoose.Schema({
     cantidad:Number,
     unidades:String,
     precio:Number,
-    sobro:Boolean
+    sobro:Boolean,
+    local:{type: mongoose.Schema.Types.ObjectId, ref:'Locales'}
 
 })
 

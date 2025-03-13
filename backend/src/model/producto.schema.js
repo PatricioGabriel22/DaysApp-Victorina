@@ -23,8 +23,7 @@ const productoDaysAppSchema = new mongoose.Schema({
             default: 0
     },
     dias:{
-        type:[],
-        default: 1
+        type:[]
     },
     revisado:{
         type:Boolean,
@@ -36,7 +35,8 @@ const productoDaysAppSchema = new mongoose.Schema({
     cantidad:Number,
     unidades:String,
     precio:Number,
-    sobro:Boolean
+    sobro:Boolean,
+    local:{type: mongoose.Schema.Types.ObjectId, ref:'locales'}
 
 })
 

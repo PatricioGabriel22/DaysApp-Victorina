@@ -19,7 +19,10 @@ export const productsRouter = Router()
 
 
 
-productsRouter.get('/allProducts/:db?',getAllProducts)
+
+
+
+productsRouter.get('/:localName/allProducts/:db?',getAllProducts)
 productsRouter.get('/find/:searched',findSearchedProducts)
 
 // productsRouter.get('/allProducts',getAllProducts)

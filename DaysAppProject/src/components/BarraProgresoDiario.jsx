@@ -95,7 +95,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
   
   const editProduct = useCallback(async ()=>{
 
-    console.log("click en editar")
+    
 
 
     Swal.fire({
@@ -144,14 +144,19 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
     
 
   useEffect(() => {
-    if (allDataCopy.dias.length >= 7) {
+
+    if ( (allDataCopy.dias.length % 3 === 0 && allDataCopy.dias.length > 6) || (allDataCopy.dias.length > 6 && !allDataCopy.revisado)) {
         setColor('red');
-        if(allDataCopy.revisado === true){
-          setColor('green')
-        }
-    } else{
-        setColor('green');
-    }
+
+
+
+      }else{
+        setColor('green')
+      }
+
+      
+
+      
     }, [allDataCopy.dias,allDataCopy.revisado]);
 
 
@@ -187,7 +192,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
 
                   
                   </div>
-                  <p>Dias: {allDataCopy.dias[allDataCopy.dias.length-1]}</p>
+                  <p>Dias: {allDataCopy.dias[allDataCopy.dias.length-1] || 0}</p>
                   <p>Ultima revision {allDataCopy.fechaRevision}</p>
                   
     
@@ -198,11 +203,11 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
                 <RiDeleteBinLine size={50} className=" text-red-500" onClick={deleteProduct}/>
                 
                 <RiEditLine  size={50} className="text-sky-500 " onClick={editProduct}/>
-                {/* <button className="bg-white text-black rounded-full w-20" onClick={aumentarDia}>aumentar dia</button> */}
+                <button className="bg-white text-black rounded-full w-20" onClick={aumentarDia}>+1 dia</button>
                 
 
                 {
-                  (allDataCopy.revisado === false) ? (
+                  (!allDataCopy.revisado) ? (
                   
                     <button className=" bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
                 

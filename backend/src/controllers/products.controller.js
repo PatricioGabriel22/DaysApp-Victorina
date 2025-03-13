@@ -1,7 +1,10 @@
+import localSchema from "../model/local.schema.js";
 import productoDaysAppSchema from "../model/producto.schema.js";
 import stockSchema from "../model/stock.schema.js";
 
-function capitalize(word){
+import days from 'dayjs'
+
+export function capitalize(word){
     return word.charAt(0).toUpperCase()+word.slice(1,word.length)
 }
 
@@ -12,14 +15,24 @@ export function removeAccents(str) {
 
 
 export const getAllProducts = async(req,res)=>{
-    const {db} = req.params
+    const {localName,db} = req.params
 
-   
+   try {
+    
     const schemaDB = db === "produccion-diaria" ?  stockSchema : productoDaysAppSchema
    
-    const dataDB = await schemaDB.find({})
 
-    dataDB ? res.json(dataDB) : res.json({"mensaje":"No se pudo traer la info de la db"})
+    const loggedLocal = await localSchema.findOne({username:localName})
+    console.log(loggedLocal)
+    const dataDB = await schemaDB.find({local:loggedLocal._id})
+    console.log(dataDB)
+
+    loggedLocal && dataDB ? res.json(dataDB) : res.json({"mensaje":"No se pudo traer la info de la db"})
+
+   } catch (error) {
+        console.log(error)
+   }
+
 
 
 }
@@ -59,7 +72,8 @@ export const findSearchedProducts = async(req,res)=>{
 export const crearNuevo = async (req,res)=>{
     let flagRes = false
     
-    const {productName,fechaInicio,cantidad,unidades,precio,sobro} = req.body
+    const {localID,productName,fechaInicio,cantidad,unidades,precio,sobro} = req.body
+    console.log(localID)
 
     console.log( productName,fechaInicio,cantidad,unidades)
 
@@ -73,7 +87,9 @@ export const crearNuevo = async (req,res)=>{
         cantidad,
         unidades,
         precio,
-        sobro
+        sobro,
+        local:localID
+
         
     }
 

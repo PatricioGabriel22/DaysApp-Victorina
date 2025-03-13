@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Select from 'react-select'
 import PropTypes from "prop-types";
-import {ListaProductos} from '../functions/products.js'
+import {ListaProductos} from '../../functions/products.js'
 
 
 const options = ListaProductos.map((producto)=>({
@@ -15,7 +15,17 @@ const options = ListaProductos.map((producto)=>({
 export default function FormDataProducto({productData}){
     
     const [targetLista,setTargetLista] = useState()
+    const [ID,setID] = useState('')
 
+    useEffect(()=>{
+
+        setID(sessionStorage.getItem('ID'))
+
+
+    },[])
+
+
+    
 
     const handleSubmit = (e)=>{
         e.preventDefault()
@@ -26,7 +36,7 @@ export default function FormDataProducto({productData}){
         const nombreDelProducto = e.target[1].value !== ""? e.target[1].value: targetLista.value
         const [anio,mes,dia] = e.target[0].value.split('-')
         // console.log(dia,mes,anio)
-
+        
         
        const collectedData = {
         "productName":nombreDelProducto.toLowerCase(),
@@ -34,7 +44,8 @@ export default function FormDataProducto({productData}){
         "cantidad":e.target[3].value,
         "unidades":e.target[4].value,
         "sobro":e.target[5].checked,
-        "precio":e.target[6].value
+        "precio":e.target[6].value,
+        "localID":ID
         }
 
         console.log(collectedData)

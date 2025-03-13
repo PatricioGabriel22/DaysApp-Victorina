@@ -7,9 +7,11 @@ import days from 'dayjs'
 import {ClockLoader} from 'react-spinners'
 
 
-import FormDataProducto from '../components/FormDataProducto.jsx'
+import FormDataProducto from '../components/forms/FormDataProducto.jsx'
+import FormIgnore from '../components/forms/FormIgnore.jsx'
 import BarraProgresoDiario from '../components/BarraProgresoDiario.jsx'
 import SearchingBar from '../components/SearchingBar.jsx'
+
 
 import { randomUtils } from '../functions/random.js'
 import { browserAction } from '../functions/searchUtils.js'
@@ -46,6 +48,8 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
   const [searched,setSearched] = useState(null)
   
 
+ 
+
 
 
   // isLoading ? console.log("buscando data") : console.log("operacion terminada")
@@ -55,7 +59,7 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
     try {
       //Cargo el array original y creo una copia para realizar busqueda y no alterar el original
       setAllDataCopy(allData)
-     
+
 
     } catch (error) {
       console.log(error)
@@ -131,6 +135,7 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
 
           <div className='flex flex-col items-center '>
 
+
             <h1 className='text-white text-4xl'>Control de dias</h1>
 
 
@@ -146,7 +151,11 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
                   productData={productData}
                  
                 />
+
+
+                  <FormIgnore/>
                 {flagRes ? <p className="text-white">Producto agregado!</p> : null}
+
 
 
 

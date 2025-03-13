@@ -2,24 +2,24 @@ import express from 'express'
 import { connectDB } from './DB.js'
 import productoSchema from './model/producto.schema.js'
 import cors from 'cors'
+
+
+
+import { sessionRouter } from './routes/session.routes.js'
 import {productsRouter} from './routes/products.routes.js'
 
 
-import days from 'dayjs'
 
-
-
-
-
-// import cron from 'node-cron'
-// import fs from 'fs'
 export const server = express()
 const PORT = process.env.PORT || 4000
 
 server.use(express.json())
-server.use(cors())
+server.use(cors({ origin: 'http://localhost:5173', credentials: true })) //modificar para produccion
+
 server.use(express.static('public'))
 
+
+server.use(sessionRouter)
 server.use(productsRouter)
 
 try {

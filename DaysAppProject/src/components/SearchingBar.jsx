@@ -12,7 +12,7 @@ export default function SearchingBar({SetSearched}){
 
     return(
         <Fragment>
-            <div className='w-full  flex mt-6 rounded-full'>
+            <div className=' flex mt-6 rounded-full'>
 
                 <input className='w-full p-2 text-black rounded-l-full' type='text' onChange={(e)=>{SetSearched(e.target.value)}}/>
                 <MdContentPasteSearch size={40} color='black' 
