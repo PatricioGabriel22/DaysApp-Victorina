@@ -13,8 +13,10 @@ import {productsRouter} from './routes/products.routes.js'
 export const server = express()
 const PORT = process.env.PORT || 4000
 
+const serverURL = PORT === 4000? "http://localhost:5173" : "https://daysapp-victorina.onrender.com"
+
 server.use(express.json())
-server.use(cors({ origin: 'http://localhost:5173', credentials: true })) //modificar para produccion
+server.use(cors({ origin: serverURL , credentials: true })) //modificar para produccion
 
 server.use(express.static('public'))
 
