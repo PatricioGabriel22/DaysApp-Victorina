@@ -25,11 +25,15 @@ export const getAllProducts = async(req,res)=>{
     //use ObjectId("") en mongoose para normalizar el poasaje de strings a objectID
 
     const loggedLocal = await localSchema.findOne({username:localName})
-    console.log(loggedLocal)
-    const dataDB = await schemaDB.find({local:new mongoose.Types.ObjectId(loggedLocal._id)})
-    console.log(dataDB)
+    if(loggedLocal){
 
-    loggedLocal && dataDB ? res.json(dataDB) : res.json({"mensaje":"No se pudo traer la info de la db"})
+        console.log(loggedLocal)
+        const dataDB = await schemaDB.find({local:new mongoose.Types.ObjectId(loggedLocal._id)})
+        console.log(dataDB)
+    
+        dataDB ? res.json(dataDB) : res.json({"mensaje":"No se pudo traer la info de la db"})
+
+    }
 
    } catch (error) {
         console.log(error)
