@@ -9,7 +9,7 @@ import { GiCook } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
-import bakeryIMG from '../../public/bakery.png'
+import bakeryIMG from '/bakery.png'
 
 
 

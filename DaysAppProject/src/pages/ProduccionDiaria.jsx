@@ -8,7 +8,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 
 
-export default function ProduccionDiaria({ serverUrl }) {
+export default function ProduccionDiaria({ serverUrl,localName }) {
     const [fechaDelInput, setFechaDelInput] = useState('1/1/1')
     const [auxFecha, setAuxFecha] = useState('1/1/1')
 
@@ -28,12 +28,12 @@ export default function ProduccionDiaria({ serverUrl }) {
     // Obtiene los productos desde el servidor
     const getStockContent = useCallback(async () => {
         try {
-            const res = await axios.get(`${serverUrl}/allProducts/produccion-diaria`)
+            const res = await axios.get(`${serverUrl}/${localName}/allProducts/produccion-diaria`, {withCredentials:true})
             setStockData(res.data)
         } catch (error) {
             console.error("Error al obtener datos:", error)
         }
-    }, [serverUrl])
+    }, [serverUrl,localName])
 
 
     const handleTick = useCallback(async(event,item)=>{

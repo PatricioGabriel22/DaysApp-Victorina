@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import localSchema from "../model/local.schema.js";
 import productoDaysAppSchema from "../model/producto.schema.js";
 import stockSchema from "../model/stock.schema.js";
@@ -21,10 +22,11 @@ export const getAllProducts = async(req,res)=>{
     
     const schemaDB = db === "produccion-diaria" ?  stockSchema : productoDaysAppSchema
    
+    //use ObjectId("") en mongoose para normalizar el poasaje de strings a objectID
 
     const loggedLocal = await localSchema.findOne({username:localName})
     console.log(loggedLocal)
-    const dataDB = await schemaDB.find({local:loggedLocal._id})
+    const dataDB = await schemaDB.find({local:new mongoose.Types.ObjectId(loggedLocal._id)})
     console.log(dataDB)
 
     loggedLocal && dataDB ? res.json(dataDB) : res.json({"mensaje":"No se pudo traer la info de la db"})

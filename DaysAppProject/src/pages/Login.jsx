@@ -51,7 +51,7 @@ export default function Login({serverUrl,setLoggedIn, setLocalName}){
       <Fragment>
         <div className="min-h-screen text-black  flex flex-col items-center justify-center">
 
-          <form className=" w-80 border-4 rounded-2xl text-white border-cyan-500 p-5 flex flex-col" onSubmit={(e)=>handleLogin(e)}>
+          <form className=" w-80 border-4 rounded-2xl text-white border-orange-600 p-5 flex flex-col" onSubmit={(e)=>handleLogin(e)}>
 
             <input placeholder="username" type="text" className="text-black"/>
             <input placeholder="password" type="password" className="text-black"/>

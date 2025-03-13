@@ -113,6 +113,7 @@ function App(){
           allData={allData}
           isLoading={isLoading}
           serverUrl={serverUrl}
+          localName={localName}
           />}
         />
 

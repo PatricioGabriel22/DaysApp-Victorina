@@ -130,7 +130,7 @@ sessionRouter.post('/login',async(req,res)=>{
             message:`Accedio como ${loginUserTarget.username}`,
             username:loginUserTarget.username,
             id:loginUserTarget._id,
-            token:token
+            
         })
 
     
@@ -148,12 +148,7 @@ sessionRouter.post('/login',async(req,res)=>{
 })
 
 sessionRouter.post('/logout', (req, res) => {
-    res.clearCookie('access_cookie', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        expires: new Date(0) // Expira inmediatamente la cookie
-    }).json({ message: "Logout successful" });
+    res.clearCookie('access_cookie').json({ message: "Logout successful" });
 })
 
 
