@@ -26,7 +26,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
       "fechaInicio":allDataCopy.fechaInicio,
       "dias":allDataCopy.dias.length+ 1,
 
-      }).then(res=>{
+      },{withCredentials:true}).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
       }).catch(e=>console.log(e))
@@ -42,7 +42,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
       "fechaInicio":allDataCopy.fechaInicio,
       "dias":allDataCopy.dias.length+ 1,
       "revisado": !allDataCopy.revisado
-      }).then(res=>{
+      },{withCredentials:true}).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
 
@@ -71,7 +71,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
         await axios.put(`${serverUrl}/eliminarProducto`,{
           "productName":allDataCopy.productName,
           "fechaInicio":allDataCopy.fechaInicio,
-          }).then(res=>{
+          },{withCredentials:true}).then(res=>{
     
           console.log(res)
           setFlagUpdate(!flagUpdate)
@@ -119,7 +119,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
         "nuevoNombre": nuevoNombre,
         "fechaInicio":allDataCopy.fechaInicio
     
-        }).then(res=>{
+        },{withCredentials:true}).then(res=>{
     
           console.log(res)
           setFlagUpdate(!flagUpdate)
