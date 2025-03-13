@@ -13,7 +13,7 @@ import {productsRouter} from './routes/products.routes.js'
 export const server = express()
 const PORT = process.env.PORT || 4000
 
-const serverURL = PORT === 4000? "http://localhost:5173" : "https://daysapp-victorina.onrender.com"
+const serverURL = PORT === 4000? "http://localhost:5173" : "https://days-app-victorina.vercel.app"
 
 server.use(express.json())
 server.use(cors({ origin: serverURL , credentials: true })) //modificar para produccion
