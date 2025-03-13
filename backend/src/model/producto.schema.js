@@ -23,7 +23,8 @@ const productoDaysAppSchema = new mongoose.Schema({
             default: 0
     },
     dias:{
-        type:[]
+        type:[],
+        default:1
     },
     revisado:{
         type:Boolean,
