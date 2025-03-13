@@ -25,6 +25,9 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
     const [tick,setTick] = useState([])
     const [deleteTick,setDeleteTick] = useState(false)
 
+    const [updateAfter,setUpdateAfter] = useState(true)
+
+
     // Obtiene los productos desde el servidor
     const getStockContent = useCallback(async () => {
         try {
@@ -76,23 +79,24 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
             for(const thickedItem of tick){
 
                 try {
-                    axios.put(`${serverUrl}/eliminarProducto/${thickedItem.nombre}`,{
+                    await axios.put(`${serverUrl}/eliminarProducto/${thickedItem.nombre}`,{
                         dateToFilter: auxFecha
-                    })
-                    .then(getStockContent).then(setDeleteTick(false))
+                    },{withCredentials:true})
+                    
                 } catch (error) {
                     console.log(error)
                 }
             }
 
-
+            getStockContent()
+            setUpdateAfter(!updateAfter)
         }else{
             
             console.log("Nada para eliminar")
         }
         
 
-    },[auxFecha,deleteTick,tick,serverUrl,getStockContent])
+    },[auxFecha,deleteTick,tick,serverUrl,getStockContent,updateAfter])
 
 
 
