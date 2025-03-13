@@ -43,7 +43,7 @@ function App(){
     setIsLoading(true)
 
 
-    const res = await axios.get(`${serverUrl}/${localName}/allProducts`)
+    const res = await axios.get(`${serverUrl}/${localName}/allProducts`,{withCredentials:true})
     if(!res) throw new Error("Error al buscar los datos")
 
     // res = await axios.get(`${serverUrl}/find/${searched}`)
