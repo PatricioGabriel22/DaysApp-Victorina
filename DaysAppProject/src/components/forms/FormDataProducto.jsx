@@ -61,7 +61,7 @@ export default function FormDataProducto({productData}){
     return(
         <Fragment>
 
-            <form className='flex flex-col w-60 text-black pt-5 text-center gap-1' onSubmit={handleSubmit}>
+            <form id="formDataPoducto" className='flex flex-col w-60 text-black pt-5 text-center gap-1' onSubmit={handleSubmit}>
 
 
                     <label htmlFor="FechaElaboracion" className="text-white ">

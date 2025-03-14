@@ -233,4 +233,5 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
 
 ProduccionDiaria.propTypes = {
     serverUrl: PropTypes.string.isRequired,
+    localName:PropTypes.string
 }

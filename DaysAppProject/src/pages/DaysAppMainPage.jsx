@@ -4,7 +4,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import days from 'dayjs'
 
-import {ClockLoader} from 'react-spinners'
+
 
 
 import FormDataProducto from '../components/forms/FormDataProducto.jsx'
@@ -13,7 +13,7 @@ import BarraProgresoDiario from '../components/BarraProgresoDiario.jsx'
 import SearchingBar from '../components/SearchingBar.jsx'
 
 
-import { randomUtils } from '../functions/random.js'
+
 import { browserAction } from '../functions/searchUtils.js'
 import PropTypes from 'prop-types'
 
@@ -21,13 +21,12 @@ import PropTypes from 'prop-types'
 
 
 
-const loadingMsgs = ["Ostia che","Abriendo el local","Despertando a los panaderos","Armando las mesas", "Reponiendo el pan", "Pintando las facturas", "Poniendo agua a la cafetera"]
 
 
 
 
 
-export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpdate,serverUrl}){
+export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,serverUrl}){
   
 
   const [diaActual,setDiaActual] = useState(days().format('DD/MM/YYYY'))
@@ -122,74 +121,62 @@ export default function DaysAppMainPage({allData,isLoading,flagUpdate,setFlagUpd
   return (
     <Fragment>
 
-      <div>
-
-        {isLoading ? (
-          <div className='flex flex-col gap-2 items-center justify-center min-h-screen'>
-              <ClockLoader color="#FFD700" size={100}/>
-              <p>{randomUtils.choice(loadingMsgs)}...</p>
-          </div>
-
-        )
-        :(
-
-          <div className='flex flex-col items-center '>
+      
 
 
-            <h1 className='text-white text-4xl'>Control de dias</h1>
+      <div className='flex flex-col items-center '>
 
 
-            <span className='text-white'>Hoy es {diaActual}, {horaActual}</span>
-
-            <button className='rounded-lg bg-green-500 w-30 p-2 text-center'
-              onClick={()=>{setBTNProducto(true); if(BTNProdcuto) setBTNProducto(false)}}>Nuevo producto</button>
-
-            {BTNProdcuto ? (
-              <div className='flex flex-col items-center'>
-
-                <FormDataProducto
-                  productData={productData}
-                 
-                />
+        <h1 className='text-white text-4xl'>Control de dias</h1>
 
 
-                  <FormIgnore/>
-                {flagRes ? <p className="text-white">Producto agregado!</p> : null}
+        <span className='text-white'>Hoy es {diaActual}, {horaActual}</span>
 
+        <button className='rounded-lg bg-green-500 w-30 p-2 text-center'
+          onClick={()=>{setBTNProducto(true); if(BTNProdcuto) setBTNProducto(false)}}>Nuevo producto</button>
 
+        {BTNProdcuto ? (
+          <div className='flex flex-col items-center'>
 
-
-              </div>
-
-            ):""}
-
-            {/* Barra de busqueda */}
-            <SearchingBar
-            searched={searched}
-            SetSearched={setSearched}
-            serverUrl={serverUrl}
+            <FormDataProducto
+              productData={productData}
+              
             />
 
 
+              <FormIgnore/>
+            {flagRes ? <p className="text-white">Producto agregado!</p> : null}
 
 
 
-            {allDataCopy.map((item,index)=>{return(
-
-
-              <BarraProgresoDiario key={index} allDataCopy={item} flagUpdate={flagUpdate} setFlagUpdate={setFlagUpdate} serverUrl={serverUrl} />
-
-
-            )})}
 
           </div>
 
+        ):""}
+
+        {/* Barra de busqueda */}
+        <SearchingBar
+        searched={searched}
+        SetSearched={setSearched}
+        serverUrl={serverUrl}
+        />
 
 
-        )}
 
+
+
+        {allDataCopy.map((item,index)=>{return(
+
+
+          <BarraProgresoDiario key={index} allDataCopy={item} flagUpdate={flagUpdate} setFlagUpdate={setFlagUpdate} serverUrl={serverUrl} />
+
+
+        )})}
 
       </div>
+
+
+      
 
     </Fragment>
   )

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { Route, Routes, BrowserRouter} from "react-router-dom";
 
 
 import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
@@ -8,6 +8,7 @@ import axios from "axios";
 import Login from "./pages/Login.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import Nav from "./components/Nav.jsx";
+import { useLocalContext } from "./context/localContext.jsx";
 
 
 
@@ -21,17 +22,16 @@ import Nav from "./components/Nav.jsx";
 function App(){
 
 
-  const serverUrl = import.meta.env.DEV ? import.meta.env.VITE_LOCAL : import.meta.env.VITE_RENDER
 
-  const [isLoading,setIsLoading] = useState(false)
+  const {isLoading,setIsLoading,serverUrl,localName,setLocalName} = useLocalContext()
   const [flagUpdate, setFlagUpdate] = useState(false)
 
+  
 
   const [loggedIn,setLoggedIn] = useState(false)
 
   const [allData,setAllData] = useState([])
 
-  const [localName,setLocalName] = useState('')
     
 
 
@@ -40,7 +40,7 @@ function App(){
   const getProducts = useCallback(async ()=>{
     
 
-    setIsLoading(true)
+  
 
 
     const res = await axios.get(`${serverUrl}/${localName}/allProducts`,{withCredentials:true})
@@ -48,14 +48,14 @@ function App(){
 
     // res = await axios.get(`${serverUrl}/find/${searched}`)
 
-    setIsLoading(false)
+   
     
     return  res.data 
     
 
 
 
-  },[serverUrl,setIsLoading,localName])
+  },[serverUrl,localName])
 
 
   useEffect(()=>{
@@ -76,7 +76,7 @@ function App(){
       console.log(error)
     }
 
-  },[getProducts,flagUpdate,localName])
+  },[getProducts,flagUpdate,setLocalName,localName])
 
   
 
@@ -84,42 +84,53 @@ function App(){
   return(
     <div className='bg-black min-h-screen min-w-screen  text-white flex flex-col items-center '>
       
+   
+      <BrowserRouter>
+        
+        {loggedIn || sessionStorage.getItem('auth')? 
+          <Nav 
+            serverUrl={serverUrl} 
+            localName={localName} 
+            setLoggedIn={setLoggedIn}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            
+            /> : ""}
+      
 
-    <Router>  
-      {loggedIn || sessionStorage.getItem('auth')? <Nav serverUrl={serverUrl} localName={localName} setLoggedIn={setLoggedIn}/> : ""}
+        <Routes>
+
+
+
+          <Route path="/login" element={<Login  setLoggedIn={setLoggedIn}  />}  /> 
+
+
+          <Route path="/" element={
+            <PrivateRoute>
+              <DaysAppMainPage 
+                allData={allData} 
+                isLoading={isLoading}
+                flagUpdate={flagUpdate}
+                setFlagUpdate={setFlagUpdate}
+                serverUrl={serverUrl} 
+              />
+              </PrivateRoute>
+            } 
+          />
+
+          <Route path="/produccion-diaria" element={<ProduccionDiaria 
+            allData={allData}
+            serverUrl={serverUrl}
+            localName={localName}
+            />}
+          />
+
+        </Routes>
+
+        
+      </BrowserRouter>
+     
     
-
-      <Routes>
-
-
-
-        <Route path="/login" element={<Login serverUrl={serverUrl}  setLoggedIn={setLoggedIn} setLocalName={setLocalName} />}  /> 
-
-
-        <Route path="/" element={
-          <PrivateRoute>
-            <DaysAppMainPage 
-              allData={allData} 
-              isLoading={isLoading}
-              flagUpdate={flagUpdate}
-              setFlagUpdate={setFlagUpdate}
-              serverUrl={serverUrl} 
-            />
-            </PrivateRoute>
-          } 
-        />
-
-        <Route path="/produccion-diaria" element={<ProduccionDiaria 
-          allData={allData}
-          isLoading={isLoading}
-          serverUrl={serverUrl}
-          localName={localName}
-          />}
-        />
-
-      </Routes>
-
-    </Router>
 
     </div>
     

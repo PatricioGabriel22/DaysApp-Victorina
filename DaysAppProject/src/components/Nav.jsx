@@ -10,11 +10,12 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 import bakeryIMG from '/bakery.png'
+import PropTypes from "prop-types";
 
 
 
 
-export default function Nav({serverUrl,localName,setLoggedIn}){
+export default function Nav({serverUrl,localName,setLoggedIn,setIsLoading}){
 
     const [menu,setMenu] = useState(false)
 
@@ -25,6 +26,7 @@ export default function Nav({serverUrl,localName,setLoggedIn}){
         sessionStorage.clear()
         setMenu(false)
         setLoggedIn(false)
+        setIsLoading(false)
     }
 
     
@@ -66,3 +68,15 @@ export default function Nav({serverUrl,localName,setLoggedIn}){
         </Fragment>
     )
 }
+
+
+Nav.propTypes = {
+  setLoggedIn: PropTypes.func,
+  setLocalName:PropTypes.func,
+  serverUrl: PropTypes.string,
+  isLoading: PropTypes.bool,
+  setIsLoading: PropTypes.func,
+  localName: PropTypes.string
+    
+    
+  };
