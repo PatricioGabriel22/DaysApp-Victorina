@@ -6,11 +6,11 @@ import { useLocalContext } from "../context/localContext"
 
 
 
-export default function Login({isLoading}){
+export default function Login(){
 
 
   const navigate = useNavigate()
-  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading} = useLocalContext()
+  const {localLogin,serverUrl,setLocalName,setLoggedIn,isLoading,setIsLoading} = useLocalContext()
 
 
 
@@ -29,7 +29,7 @@ export default function Login({isLoading}){
         console.log(res)
         if(res.status === 200){
             console.log(res.data)
-            setIsLoading(!isLoading)
+            setIsLoading(isLoading)
             setLoggedIn(true)
             setLocalName(res.data.username)
             sessionStorage.setItem('auth','true')
@@ -54,7 +54,7 @@ export default function Login({isLoading}){
     return (
       <Fragment>
 
-        {isLoading? 
+        {!isLoading? 
           (<Loader/>) :
 
         (
@@ -65,7 +65,7 @@ export default function Login({isLoading}){
             <input placeholder="username" type="text" className="text-black"/>
             <input placeholder="password" type="password" className="text-black"/>
 
-            <button type="submit" onClick={()=>setIsLoading(!isLoading)}>Login</button>
+            <button type="submit" >Login</button>
 
           </form>
 

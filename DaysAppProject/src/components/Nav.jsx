@@ -11,22 +11,23 @@ import { Link } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 import bakeryIMG from '/bakery.png'
 import PropTypes from "prop-types";
+import { useLocalContext } from "../context/localContext";
 
 
 
 
-export default function Nav({serverUrl,localName,setLoggedIn,setIsLoading}){
+export default function Nav(){
 
     const [menu,setMenu] = useState(false)
 
-
+    const {serverUrl,localName,setLoggedIn,setIsLoading} = useLocalContext()
 
     function handleLogout(){
         axios.post(`${serverUrl}/logout`,{},{withCredentials:true})
         sessionStorage.clear()
         setMenu(false)
         setLoggedIn(false)
-        setIsLoading(false)
+        setIsLoading(true)
     }
 
     
