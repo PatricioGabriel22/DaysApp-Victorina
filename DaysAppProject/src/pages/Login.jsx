@@ -15,7 +15,7 @@ export default function Login(){
 
   function handleLogin(e){
     e.preventDefault()
-    console.log(e)
+    setIsLoading(true)
 
     const logInInpoutData = {
       username:e.target[0].value,
@@ -29,7 +29,7 @@ export default function Login(){
         if(res.status === 200){
             console.log(res.data)
             
-            setLoggedIn(true)
+            setLoggedIn(false)
             setLocalName(res.data.username)
             sessionStorage.setItem('auth','true')
             sessionStorage.setItem('username',res.data.username)
@@ -63,7 +63,7 @@ export default function Login(){
             <input placeholder="username" type="text" className="text-black"/>
             <input placeholder="password" type="password" className="text-black"/>
 
-            <button type="submit" onClick={()=>setIsLoading(true)}>Login</button>
+            <button type="submit">Login</button>
 
           </form>
 
