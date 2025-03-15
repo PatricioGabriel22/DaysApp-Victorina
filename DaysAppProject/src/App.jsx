@@ -5,10 +5,10 @@ import { useLocalContext } from "./context/localContext.jsx";
 
 import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
 import ProduccionDiaria from "./pages/ProduccionDiaria.jsx";
-import Login from "./pages/Login.jsx";
 import Nav from "./components/Nav.jsx";
 import Loader from './components/Loader.jsx'
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import LoginAndRegister from "./pages/LoginAndRegister.jsx";
 
 import axios from "axios";
 
@@ -102,7 +102,7 @@ function App(){
 
           <Route 
             path="/login" 
-            element={isLoading ? <Loader /> : <Login setLoggedIn={setLoggedIn} />} 
+            element={isLoading ? <Loader /> : <LoginAndRegister setLoggedIn={setLoggedIn} />} 
           />
             
             
