@@ -29,6 +29,7 @@ import PropTypes from 'prop-types'
 export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,serverUrl}){
   
 
+
   const [diaActual,setDiaActual] = useState(days().format('DD/MM/YYYY'))
   const [horaActual, setHoraActual] = useState(days().format('HH:mm:ss'))
 

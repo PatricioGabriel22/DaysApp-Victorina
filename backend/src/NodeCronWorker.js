@@ -35,14 +35,14 @@ async function CronBackgroundWorker() {
         for (const item of productos) {
 
            
-            await productoSchema.findOneAndUpdate(
+            await productoSchema.updateMany(
                 { productName: item.productName, fechaInicio: item.fechaInicio },
                 { $push: { dias: item.dias.length + 1 } },
                 { upsert: true }
             )
 
             if (item.dias.length >= 6 || (item.dias.length % 3 === 0 && item.dias.length > 6)) {
-                await productoSchema.findOneAndUpdate(
+                await productoSchema.updateMany(
                     { productName: item.productName, fechaInicio: item.fechaInicio },
                     { revisado: !item.revisado },
                     { upsert: true }

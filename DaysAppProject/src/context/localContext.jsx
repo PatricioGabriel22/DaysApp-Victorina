@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import PropTypes from 'prop-types'
 import {createContext, useContext, useState} from 'react'
@@ -23,8 +24,9 @@ export function LocalProvider({children}){
 
     const serverUrl = import.meta.env.DEV ? import.meta.env.VITE_LOCAL : import.meta.env.VITE_RENDER
 
-    const [loggedIn,setLoggedIn] = useState('false')
-    const [isLoading,setIsLoading] = useState('false')
+    const [loggedIn,setLoggedIn] = useState(false)
+    const [isLoading,setIsLoading] = useState(false)
+    const [miniLoader,setMiniLoader] = useState(false)
 
     
     const [localName,setLocalName] = useState('')
@@ -48,7 +50,10 @@ export function LocalProvider({children}){
             setLoggedIn,
 
             isLoading,
-            setIsLoading
+            setIsLoading,
+            
+            miniLoader,
+            setMiniLoader
             
         }
             }>

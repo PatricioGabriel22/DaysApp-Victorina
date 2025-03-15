@@ -27,7 +27,7 @@ export default function Nav(){
         sessionStorage.clear()
         setMenu(false)
         setLoggedIn(false)
-        setIsLoading(true)
+        setIsLoading(false)
     }
 
     

@@ -29,6 +29,9 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
       },{withCredentials:true}).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
+
+        
+
       }).catch(e=>console.log(e))
       
 

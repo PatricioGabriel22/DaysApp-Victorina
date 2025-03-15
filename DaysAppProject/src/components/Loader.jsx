@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { ClockLoader } from "react-spinners";
+import { ClockLoader } from "react-spinners"
 import { randomUtils } from "../functions/random";
 
 

@@ -4,11 +4,15 @@ import {logicaFiltros, splitFecha } from "../functions/funcionesDeAgrupacionPorF
 import axios from "axios"
 
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useLocalContext } from "../context/localContext.jsx";
 
-
+import { PuffLoader } from "react-spinners";
 
 
 export default function ProduccionDiaria({ serverUrl,localName }) {
+
+    const {miniLoader,setMiniLoader} = useLocalContext()
+
     const [fechaDelInput, setFechaDelInput] = useState('1/1/1')
     const [auxFecha, setAuxFecha] = useState('1/1/1')
 
@@ -77,11 +81,13 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
         if(tick.length>0 && deleteTick){
         
             for(const thickedItem of tick){
-
+                setMiniLoader(true)
                 try {
                     await axios.put(`${serverUrl}/eliminarProducto/${thickedItem.nombre}`,{
                         dateToFilter: auxFecha
                     },{withCredentials:true})
+
+                    setMiniLoader(false)
                     
                 } catch (error) {
                     console.log(error)
@@ -96,9 +102,9 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
         }
         
 
-    },[auxFecha,deleteTick,tick,serverUrl,getStockContent,updateAfter])
+    },[auxFecha,deleteTick,tick,serverUrl,getStockContent,updateAfter,setMiniLoader])
 
-
+    console.log(miniLoader)
 
     // Obtiene datos del servidor al montar el componente
     useEffect(() => {getStockContent()}, [getStockContent])
@@ -203,11 +209,18 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
                         
                         
                         <div key={index} className={`flex justify-between items-center border border-gray-300 px-4 py-2 
-                                ${tick.some(t => t.nombre === item.nombre) ? `bg-red-700`:""}`}>
-                            {auxFecha.length === 10 ? (
-                                 <input type='checkbox'  onChange={(e)=>handleTick(e,item)}/>
-                            ):("")}
-                           
+                                ${tick.some(t => t.nombre === item.nombre) ? `bg-red-400`:""}`}>
+                                {auxFecha.length === 10 ? (
+                                
+                                    <input type="checkbox" onChange={(e) => handleTick(e, item)} />
+                                
+                                ) : null}
+
+                                {miniLoader? (
+                                    <PuffLoader color="#000000"  size={25} />
+
+                                ):null}
+
                             <p className="w-1/4 text-center">{item.nombre}</p>
                             <p className="w-1/4 text-center ">{item.cantidad.toLocaleString("es-AR")}</p>
                             <p className="w-1/4 text-center">{item.unidades}</p>

@@ -1,15 +1,16 @@
 import { Route, Routes, BrowserRouter} from "react-router-dom";
+import {  useCallback, useEffect, useState } from "react";
 
+import { useLocalContext } from "./context/localContext.jsx";
 
 import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
 import ProduccionDiaria from "./pages/ProduccionDiaria.jsx";
-import {  useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import Login from "./pages/Login.jsx";
-import PrivateRoute from "./components/PrivateRoute.jsx";
 import Nav from "./components/Nav.jsx";
-import { useLocalContext } from "./context/localContext.jsx";
+import Loader from './components/Loader.jsx'
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
+import axios from "axios";
 
 
 
@@ -23,7 +24,7 @@ function App(){
 
 
 
-  const {isLoading,setIsLoading,serverUrl,localName,setLocalName} = useLocalContext()
+  const {isLoading,serverUrl,localName,setLocalName} = useLocalContext()
   const [flagUpdate, setFlagUpdate] = useState(false)
 
   
@@ -38,10 +39,6 @@ function App(){
 
   
   const getProducts = useCallback(async ()=>{
-    
-
-  
-
 
     const res = await axios.get(`${serverUrl}/${localName}/allProducts`,{withCredentials:true})
     if(!res) throw new Error("Error al buscar los datos")
@@ -79,6 +76,8 @@ function App(){
   },[getProducts,flagUpdate,setLocalName,localName])
 
   
+  console.log(isLoading)
+
 
 
   return(
@@ -92,8 +91,7 @@ function App(){
             serverUrl={serverUrl} 
             localName={localName} 
             setLoggedIn={setLoggedIn}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
+
             
             /> : ""}
       
@@ -102,7 +100,12 @@ function App(){
 
 
 
-          <Route path="/login" element={<Login  setLoggedIn={setLoggedIn}  />}  /> 
+          <Route 
+            path="/login" 
+            element={isLoading ? <Loader /> : <Login setLoggedIn={setLoggedIn} />} 
+          />
+            
+            
 
 
           <Route path="/" element={

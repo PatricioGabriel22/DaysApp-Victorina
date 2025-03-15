@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 import { Fragment } from "react"
 import { useNavigate } from "react-router-dom"
-import Loader from "../components/Loader"
 import { useLocalContext } from "../context/localContext"
 
 
@@ -10,7 +9,7 @@ export default function Login(){
 
 
   const navigate = useNavigate()
-  const {localLogin,serverUrl,setLocalName,setLoggedIn,isLoading,setIsLoading} = useLocalContext()
+  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading} = useLocalContext()
 
 
 
@@ -29,7 +28,7 @@ export default function Login(){
         console.log(res)
         if(res.status === 200){
             console.log(res.data)
-            setIsLoading(isLoading)
+            setIsLoading(true)
             setLoggedIn(true)
             setLocalName(res.data.username)
             sessionStorage.setItem('auth','true')
@@ -54,10 +53,9 @@ export default function Login(){
     return (
       <Fragment>
 
-        {!isLoading? 
-          (<Loader/>) :
 
-        (
+
+        
           <div className="min-h-screen text-black  flex flex-col items-center justify-center">
 
           <form className=" w-80 border-4 rounded-2xl text-white border-orange-600 p-5 flex flex-col" onSubmit={(e)=>handleLogin(e)}>
@@ -72,7 +70,7 @@ export default function Login(){
         
 
         </div>
-        )}
+        
 
 
 
@@ -88,8 +86,7 @@ Login.propTypes = {
   setLoggedIn: PropTypes.array,
   setLocalName:PropTypes.func,
   serverUrl: PropTypes.string,
-  isLoading: PropTypes.bool,
-  setIsLoading: PropTypes.func
+
     
     
   };
