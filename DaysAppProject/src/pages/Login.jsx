@@ -28,7 +28,7 @@ export default function Login(){
         console.log(res)
         if(res.status === 200){
             console.log(res.data)
-            setIsLoading(true)
+            
             setLoggedIn(true)
             setLocalName(res.data.username)
             sessionStorage.setItem('auth','true')
@@ -63,7 +63,7 @@ export default function Login(){
             <input placeholder="username" type="text" className="text-black"/>
             <input placeholder="password" type="password" className="text-black"/>
 
-            <button type="submit" >Login</button>
+            <button type="submit" onClick={()=>setIsLoading(true)}>Login</button>
 
           </form>
 
