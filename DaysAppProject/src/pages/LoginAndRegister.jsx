@@ -91,14 +91,18 @@ export default function LoginAndRegister(){
     console.log(toRegister)
     return (
       <Fragment>
-        <div className="min-h-screen flex flex-col items-center justify-center pt-7">
-          <h1 className=" text-3xl absolute top-5">Bakery app</h1>
-          <img src={bakeryIMG} className="w-36  fixed top-20"></img>
+        <div className="min-h-screen flex flex-col items-center justify-center pt-7 ">
+          <div className="absolute top-10">
+            <h1 className="text-3xl pb-6">Bakery app</h1>
+            <img src={bakeryIMG} className="w-36 "></img>
+
+          </div>
 
         {toRegister? (
         
         <div className="flex flex-col items-center justify-center">
-            <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5" 
+
+            <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-9" 
               onSubmit={(e)=>handleRegister(e)}>
             
               <input placeholder="username" type="text" className="text-black text-center rounded"/>
@@ -119,7 +123,7 @@ export default function LoginAndRegister(){
             <div className="flex flex-col items-center justify-center">
 
 
-              <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5" 
+              <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-3" 
               onSubmit={(e)=>handleLogin(e)}>
     
                 <input placeholder="username" type="text" className="text-black text-center rounded"/>
