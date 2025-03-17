@@ -9,7 +9,7 @@ import { useLocalContext } from "../../context/localContext";
 
 export default function FormIgnore(){
     
-    const {localName} = useLocalContext()
+    const {localName,serverUrl} = useLocalContext()
     const [add,setAdd] = useState([])
     
     
@@ -41,7 +41,7 @@ export default function FormIgnore(){
         console.log(ignoredProductsPayload)
 
 
-        axios.post(`http://localhost:4000/${localName}/settings`,{
+        axios.post(`${serverUrl}/${localName}/settings`,{
             ignoredProducts: ignoredProductsPayload
         },{withCredentials:true}).then((res) => {
             sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
