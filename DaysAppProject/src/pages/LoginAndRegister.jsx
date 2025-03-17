@@ -12,7 +12,7 @@ export default function LoginAndRegister(){
 
 
   const navigate = useNavigate()
-  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading} = useLocalContext()
+  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading,setLocalSettings} = useLocalContext()
 
   const [toRegister,setToRegister] = useState(false)
   const [succesMsg,setSuccesMsg] = useState('')
@@ -41,15 +41,17 @@ export default function LoginAndRegister(){
 
       localLogin(serverUrl,logInInpoutData).then(res=>{
    
-        console.log(res)
         if(res.status === 200){
-            console.log(res.data)
+            setLocalSettings(res.data.userSettings)
+            console.log(res)
             
             setLoggedIn(false)
             setLocalName(res.data.username)
             sessionStorage.setItem('auth','true')
             sessionStorage.setItem('username',res.data.username)
             sessionStorage.setItem('ID',res.data.id)
+            sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
+
     
     
             

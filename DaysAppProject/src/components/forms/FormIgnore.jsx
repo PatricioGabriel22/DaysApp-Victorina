@@ -1,20 +1,36 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FaPlus } from "react-icons/fa";
 import axios from "axios";
+import { useLocalContext } from "../../context/localContext";
 
 
 
 
-export default function FormIgnore({setIgnore}){
+export default function FormIgnore(){
     
-    const [targetignore,setTargetIgnore] = useState()
-
+    const {localName} = useLocalContext()
     const [add,setAdd] = useState([])
+    
+    
+    useEffect(() => {
+        const storedConfig = JSON.parse(sessionStorage.getItem("config")) 
+        console.log(storedConfig)
+        const isEmpty = Object.keys(storedConfig).length === 0
+
+
+        if(!isEmpty){
+
+            setAdd([...storedConfig.ignoredProducts]);
+        }
+    }, []);
+
+
+
 
     const handleSubmit = (e)=>{
         e.preventDefault()
-
+        console.log(localName)
 
         const ignoredProductsPayload = []
 
@@ -25,24 +41,33 @@ export default function FormIgnore({setIgnore}){
         console.log(ignoredProductsPayload)
 
 
-        axios.post('http://localhost:4000/settings',{
+        axios.post(`http://localhost:4000/${localName}/settings`,{
             ignoredProducts: ignoredProductsPayload
-        },{withCredentials:true})
+        },{withCredentials:true}).then((res) => {
+            sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
+
+            console.log(res)
+        })
 
 
 
     }
 
+    const hadleInputChange = (e,index)=>{
+        const newAddedItem = [...add]
+        newAddedItem[index] = e.target.value //va a gregando letra por letra a medida que se escribe en el input
+        setAdd(newAddedItem)
+    }
     
 
     return(
         <Fragment>
 
-            <form className='flex flex-col w-60 text-black pt-5 text-center gap-1' onSubmit={handleSubmit}>
+            <form className='flex flex-col w-60 text-black pt-5 text-center gap-1 mt-14' onSubmit={handleSubmit}>
 
 
                 <label htmlFor="productoIgnorado" className="text-white flex  flex-col items-center gap-4">
-                    Ocultar productos de la lista
+                    Ocultar productos del control de dias
                     <FaPlus 
                     color="gray"
                     size={35}
@@ -59,7 +84,10 @@ export default function FormIgnore({setIgnore}){
                         key={index}
                         type="text" 
                         id={`nombreProducto ${index}`}
-                        placeholder="Ocultar del control de dias"
+                        placeholder={"Ocultar de la lista"}
+                        value={plusItem|| ""} 
+                        onChange={(e)=>hadleInputChange(e,index)}
+                        
                     className=" border-gray-300 rounded p-2 w-full"/>
                     ))
                 }

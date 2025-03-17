@@ -10,6 +10,9 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 import bakeryIMG from '/bakery.png'
+import { IoSettingsSharp } from "react-icons/io5";
+
+
 import PropTypes from "prop-types";
 import { useLocalContext } from "../context/localContext";
 
@@ -20,12 +23,13 @@ export default function Nav(){
 
     const [menu,setMenu] = useState(false)
 
-    const {serverUrl,localName,setLoggedIn,setIsLoading} = useLocalContext()
+    const {serverUrl,localName,setLoggedIn,setIsLoading,setLocalName} = useLocalContext()
 
     function handleLogout(){
         axios.post(`${serverUrl}/logout`,{},{withCredentials:true})
         sessionStorage.clear()
         setMenu(false)
+        setLocalName(false)
         setLoggedIn(false)
         setIsLoading(false)
     }
@@ -56,7 +60,12 @@ export default function Nav(){
                             <GiCook size={50} />Produccion
                         </Link>
 
-                        <Link to='/login' className="flex flex-grow gap-2 items-center  text-black hover:text-red-900 pt-52 "
+                        
+                        <Link to="/ajustes" className=" flex w-full items-center p-4 hover:bg-black " onClick={()=>(setMenu(!menu))}>
+                            <IoSettingsSharp size={50} />Ajustes
+                        </Link>
+
+                        <Link to='/login' className="flex flex-grow gap-2 items-center  text-black hover:text-red-900 m-auto"
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>

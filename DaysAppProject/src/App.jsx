@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import LoginAndRegister from "./pages/LoginAndRegister.jsx";
 
 import axios from "axios";
+import Settings from "./pages/Settings.jsx";
 
 
 
@@ -24,12 +25,11 @@ function App(){
 
 
 
-  const {isLoading,serverUrl,localName,setLocalName} = useLocalContext()
+  const {isLoading,serverUrl,localName,setLocalName, loggedIn,setLoggedIn} = useLocalContext()
   const [flagUpdate, setFlagUpdate] = useState(false)
 
   
 
-  const [loggedIn,setLoggedIn] = useState(false)
 
   const [allData,setAllData] = useState([])
 
@@ -45,7 +45,7 @@ function App(){
 
     // res = await axios.get(`${serverUrl}/find/${searched}`)
 
-   
+    
     
     return  res.data 
     
@@ -62,7 +62,8 @@ function App(){
       console.log(localName)
 
       getProducts().then(responseFromDB => {
-        setAllData(responseFromDB);
+        setAllData(responseFromDB)
+      
        
         
       })
@@ -86,11 +87,11 @@ function App(){
    
       <BrowserRouter>
         
-        {loggedIn || sessionStorage.getItem('auth')? 
+        {loggedIn || localName? 
           <Nav 
             serverUrl={serverUrl} 
             localName={localName} 
-            setLoggedIn={setLoggedIn}
+            
 
             
             /> : ""}
@@ -107,26 +108,32 @@ function App(){
             
             
 
+          <Route element={<PrivateRoute/>}>
+          
+          
+            <Route path="/" element={
+                <DaysAppMainPage 
+                  allData={allData} 
+                  isLoading={isLoading}
+                  flagUpdate={flagUpdate}
+                  setFlagUpdate={setFlagUpdate}
+                  serverUrl={serverUrl} 
+                />
+              } 
+            />
 
-          <Route path="/" element={
-            <PrivateRoute>
-              <DaysAppMainPage 
-                allData={allData} 
-                isLoading={isLoading}
-                flagUpdate={flagUpdate}
-                setFlagUpdate={setFlagUpdate}
-                serverUrl={serverUrl} 
-              />
-              </PrivateRoute>
-            } 
-          />
+            <Route path="/produccion-diaria" element={<ProduccionDiaria 
+              allData={allData}
+              serverUrl={serverUrl}
+              localName={localName}
+              />}
+            />
 
-          <Route path="/produccion-diaria" element={<ProduccionDiaria 
-            allData={allData}
-            serverUrl={serverUrl}
-            localName={localName}
-            />}
-          />
+            <Route path="/ajustes" element={<Settings/>}/>
+          
+          </Route>
+
+
 
         </Routes>
 

@@ -1,10 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 
 
 
-export default function PrivateRoute({children}){
+export default function PrivateRoute(){
     const isAuth = sessionStorage.getItem('auth') === 'true'
 
-    return isAuth ? children : <Navigate to="/login" />
+    return isAuth ? <Outlet/> : <Navigate to="/login" />
 }

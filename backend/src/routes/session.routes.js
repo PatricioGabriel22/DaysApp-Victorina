@@ -130,6 +130,7 @@ sessionRouter.post('/login',async(req,res)=>{
             message:`Accedio como ${loginUserTarget.username}`,
             username:loginUserTarget.username,
             id:loginUserTarget._id,
+            userSettings: loginUserTarget.settings || null
             
         })
 
@@ -152,24 +153,29 @@ sessionRouter.post('/logout', (req, res) => {
 })
 
 
-sessionRouter.post('/settings',async (req,res)=>{
-    const {username,ignoredProducts} = req.body
+sessionRouter.post('/:local/settings',async (req,res)=>{
+    const {local} = req.params
+    const {ignoredProducts} = req.body
 
-    console.log(ignoredProducts.map(item=> removeAccents(capitalize(item))  ))
+
+    const producotsNormalizados =  ignoredProducts.map(item => removeAccents(capitalize(item)))
 
 
     try {
         
-        await localSchema.updateOne(
-            { username: username },
+        const resData = await localSchema.findOneAndUpdate(
+            { username: local },
             { 
                 $set: { 
-                    "settings": { ignoredProducts: ignoredProducts.map(item => removeAccents(capitalize(item))) }
+                    "settings": { ignoredProducts: producotsNormalizados }
                 }
             }
             //filtro por nombre de usuario y con $set me fijio de crear el campo o de sobreescribirlo si existe
-        )
-        res.status(200).json({message:"Configuracion actualizada"})
+        ,{new:true})
+
+
+        console.log(resData)
+        res.status(200).json({message:"Configuracion actualizada", userSettings: resData.settings || null})
 
     } catch (error) {
         console.log(error)

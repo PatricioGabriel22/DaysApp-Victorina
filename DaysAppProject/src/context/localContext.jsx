@@ -32,6 +32,9 @@ export function LocalProvider({children}){
     const [localName,setLocalName] = useState('')
 
 
+    const [localSettings,setLocalSettings] = useState([])
+
+
        
 
 
@@ -51,6 +54,9 @@ export function LocalProvider({children}){
 
             isLoading,
             setIsLoading,
+
+            localSettings,
+            setLocalSettings,
             
             miniLoader,
             setMiniLoader

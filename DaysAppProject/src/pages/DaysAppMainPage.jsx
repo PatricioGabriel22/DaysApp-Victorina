@@ -8,7 +8,6 @@ import days from 'dayjs'
 
 
 import FormDataProducto from '../components/forms/FormDataProducto.jsx'
-import FormIgnore from '../components/forms/FormIgnore.jsx'
 import BarraProgresoDiario from '../components/BarraProgresoDiario.jsx'
 import SearchingBar from '../components/SearchingBar.jsx'
 
@@ -150,7 +149,6 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
             />
 
 
-            <FormIgnore/>
 
             {flagRes ? <p className="text-white">Producto agregado!</p> 
               : null
