@@ -16,6 +16,11 @@ import SearchingBar from '../components/SearchingBar.jsx'
 
 import { browserAction } from '../functions/searchUtils.js'
 import PropTypes from 'prop-types'
+import { splitFecha } from '../functions/funcionesDeAgrupacionPorFechas.js'
+
+
+import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 
 
 
@@ -42,14 +47,15 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
 
   const [flagRes, setFalgRes] = useState(null)
  
-
-  
-
   const [searched,setSearched] = useState(null)
   
 
- 
+  const [showFilters,setShowFilter] = useState(false)
 
+  const [filterProducts, setFilterProducts] = useState({
+    porRevisar:false,
+    porFecha:false
+  })
 
 
   // isLoading ? console.log("buscando data") : console.log("operacion terminada")
@@ -118,7 +124,6 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
 
 
 
-
   return (
     <Fragment>
 
@@ -145,8 +150,11 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
             />
 
 
-              <FormIgnore/>
-            {flagRes ? <p className="text-white">Producto agregado!</p> : null}
+            <FormIgnore/>
+
+            {flagRes ? <p className="text-white">Producto agregado!</p> 
+              : null
+            }
 
 
 
@@ -162,11 +170,62 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
         serverUrl={serverUrl}
         />
 
+        <div className='pt-5 cursor-pointer' onClick={()=>setShowFilter(!showFilters)}>
+          {showFilters ? <IoIosArrowDown /> : <IoIosArrowUp />}
+        </div> 
+
+
+        {showFilters && (
+
+        <div className='flex flex-row  items-center justify-center gap-5'>
+          <div className='flex flex-col'>
+
+            <label htmlFor="sin-revisar">Sin revisar</label>
+            <input 
+              type="checkbox" 
+              id="sin-revisar" 
+              onChange={() => setFilterProducts(prev => ({ ...prev, porRevisar: !prev.porRevisar }))}
+            />
+          </div>
+
+            <div className='flex flex-col items-center'>
+              <label htmlFor="por-fecha">Por fecha</label>
+              <input
+                className='text-black  rounded' 
+                type="date" 
+                id="por-fecha" 
+                onChange={(e) => {
+
+                  if(e.target.value !== ''){
+
+                    const fechaFormateada = splitFecha(e.target.value)
+                   
+                    setFilterProducts(prev => ({ ...prev, porFecha: fechaFormateada }))
+                  }else{
+                    setFilterProducts(prev => ({ ...prev, porFecha: false }))
+                    
+                  }
+
+
+                }}
+              />
+
+            </div>
+
+
+        </div>
+        )}
 
 
 
 
-        {allDataCopy.map((item,index)=>{return(
+
+        {allDataCopy
+        .filter(item=>!filterProducts.porRevisar || !item.revisado)
+        .filter(item=>!filterProducts.porFecha || item.fechaInicio === filterProducts.porFecha)
+
+
+        .map((item,index)=>{return(
 
 
           <BarraProgresoDiario key={index} allDataCopy={item} flagUpdate={flagUpdate} setFlagUpdate={setFlagUpdate} serverUrl={serverUrl} />

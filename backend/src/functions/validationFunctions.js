@@ -9,7 +9,7 @@ export function validateUserData(schema){
         const result = schema.safeParse(req.body)
 
         if(!result.success){
-            return res.status(400).json({message: "error en la validacion de datos"})
+            return res.status(400).json({message: "Datos invalidos"})
         }
 
         req.validatedData = result.data

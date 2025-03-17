@@ -1,10 +1,11 @@
 import PropTypes from "prop-types"
-import { Fragment, useState } from "react"
+import { Fragment, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLocalContext } from "../context/localContext"
 
 import bakeryIMG from '/bakery.png'
 import { FaGithub } from "react-icons/fa6";
+import { PiChefHatLight } from "react-icons/pi";
 import axios from "axios"
 
 export default function LoginAndRegister(){
@@ -14,6 +15,19 @@ export default function LoginAndRegister(){
   const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading} = useLocalContext()
 
   const [toRegister,setToRegister] = useState(false)
+  const [succesMsg,setSuccesMsg] = useState('')
+  const [errorMsg,setErrorMsg] = useState('')
+
+  const formRef = useRef(null)
+
+
+
+
+  function blankFormsWhenSwitch(){
+    setToRegister(!toRegister)
+    formRef.current?.reset()
+  }
+
 
   function handleLogin(e){
     e.preventDefault()
@@ -52,49 +66,52 @@ export default function LoginAndRegister(){
     e.preventDefault()
     console.log(e)  
 
-    const confirmedPasswordInput = e.target[3].value
+    const confirmedPasswordInput = e.target[2].value
     
     
     const registerDataInput = {
       username:e.target[0].value,
-      email:e.target[1].value,
-      password:e.target[2].value,
-      confirmPassword: confirmedPasswordInput
+      password:e.target[1].value,
+      confirmPassword: confirmedPasswordInput,
+      email:e.target[3].value
 
     }
     
 
     if(registerDataInput.password ===  confirmedPasswordInput){
-      console.log("las contraseñas coinciden")
 
       axios.post(`${serverUrl}/register`,registerDataInput,{withCredentials:true})
       
-      .then(res=>console.log(res)).then(()=> {
+      .then((res)=> {
+        console.log(res)
         e.target.reset()
-        setToRegister(false)
+        blankFormsWhenSwitch()
+        setSuccesMsg(res.data.message)
         
       })
-      .catch(error=>console.log(error))
+      .catch(error=>setErrorMsg(error.response.data.message))
 
 
 
 
     }else{
-      console.log("las contraseñas no coinciden")
+      setErrorMsg('Las contraseñas no coinciden')
 
     }
 
 
-  }
+}
 
+  setInterval(()=>{setErrorMsg('')},[3000])
 
-    console.log(toRegister)
-    return (
+    
+  return (
       <Fragment>
         <div className="min-h-screen flex flex-col items-center justify-center pt-7 ">
-          <div className="absolute top-10">
+          <div className="absolute top-10 ">
             <h1 className="text-3xl pb-6">Bakery app</h1>
             <img src={bakeryIMG} className="w-36 "></img>
+            
 
           </div>
 
@@ -102,20 +119,21 @@ export default function LoginAndRegister(){
         
         <div className="flex flex-col items-center justify-center">
 
-            <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-9" 
+            <form autoComplete="off" ref={formRef} className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col sm:mt-52 mt-9 gap-y-5" 
               onSubmit={(e)=>handleRegister(e)}>
             
-              <input placeholder="username" type="text" className="text-black text-center rounded"/>
-              <input placeholder="email" type="text" className="text-black text-center rounded"/>
-              <input placeholder="password" type="password" className="text-black text-center rounded"/>
-              <input placeholder="confirmar password" type="password" className="text-black text-center rounded"/>
+              <input name="register-username" placeholder="username" type="text" className="text-black text-center rounded" />
+              <input name="register-password" placeholder="password" type="password" className="text-black text-center rounded" />
+              <input name="register-confirmedPassword" placeholder="confirmar password" type="password" className="text-black text-center rounded"/>
+              <input name="register-email" placeholder="email" type="text" className="text-black text-center rounded"  />
     
     
               <button type="submit" className="bg-orange-600 p-2 rounded">Registrarse</button>
-    
-    
+              
+
             </form>
-            <button type="submit" onClick={()=>setToRegister(false)}>Login</button>
+            <button type="submit" onClick={()=>blankFormsWhenSwitch()}>Login</button>
+            {errorMsg && <div className="text-red-600 self-center absolute bottom-40">{errorMsg}</div>}
 
         </div>
         
@@ -123,18 +141,22 @@ export default function LoginAndRegister(){
             <div className="flex flex-col items-center justify-center">
 
 
-              <form className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-3" 
+              <form  ref={formRef} className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-14 " 
               onSubmit={(e)=>handleLogin(e)}>
     
-                <input placeholder="username" type="text" className="text-black text-center rounded"/>
-                <input placeholder="password" type="password" className="text-black text-center rounded"/>
+                <input placeholder="username" type="text" className="text-black text-center rounded" />
+                <input placeholder="password" type="password" className="text-black text-center rounded" />
     
                 <button type="submit" className="bg-orange-600 p-2 rounded">Login</button>
+                {succesMsg && <div className="text-emerald-500 w-full  text-center flex-grow flex flex-col justify-center items-center  ">
+                  <p>{succesMsg}</p>
+                  <PiChefHatLight size={20}/>
+                  </div>}
 
               </form>
               
 
-              <button className="pt-3" onClick={()=>setToRegister(true)}>Registrarse</button>
+              <button className="pt-3" onClick={()=>blankFormsWhenSwitch()}>Registrarse</button>
 
 
               <button className="pt-3">Cambiar contraseña</button>

@@ -43,12 +43,12 @@ export default function Nav(){
                         <RxCross1 size={20} className="mt-8 w-full" onClick={()=>(setMenu(!menu))}/>
 
                         <span className="flex flex-col items-center">
-                            <img src={bakeryIMG}  className="w-16 h-16 rounded-full"/>
-                            <p>{localName}</p>
+                            <img src={bakeryIMG}  className="w-16 h-16"/>
+                            <p className=" text-pretty text-black text-lg">{localName}</p>
                         </span>
 
 
-                        <Link to="/" className=" flex  items-center p-4 hover:bg-black mt-7" onClick={()=>(setMenu(!menu))}>
+                        <Link to="/" className=" flex  w-full items-center p-4 hover:bg-black mt-7" onClick={()=>(setMenu(!menu))}>
                             <CiClock1 size={50}/>Control de dias
                         </Link>
 
@@ -56,7 +56,7 @@ export default function Nav(){
                             <GiCook size={50} />Produccion
                         </Link>
 
-                        <Link to='/login' className="flex flex-grow gap-2 items-center place-self-start text-red-700 hover:text-red-900 pt-52"
+                        <Link to='/login' className="flex flex-grow gap-2 items-center  text-black hover:text-red-900 pt-52 "
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>
