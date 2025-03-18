@@ -25,7 +25,7 @@ function App(){
 
 
 
-  const {isLoading,serverUrl,localName,setLocalName, loggedIn,setLoggedIn} = useLocalContext()
+  const {isLoading,serverUrl,localName,setLocalName, loggedIn} = useLocalContext()
   const [flagUpdate, setFlagUpdate] = useState(false)
 
   
@@ -103,7 +103,7 @@ function App(){
 
           <Route 
             path="/login" 
-            element={isLoading ? <Loader /> : <LoginAndRegister setLoggedIn={setLoggedIn} />} 
+            element={isLoading ? <Loader /> : <LoginAndRegister />} 
           />
             
             

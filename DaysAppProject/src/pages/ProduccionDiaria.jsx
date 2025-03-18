@@ -177,24 +177,31 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
                 </div>
 
             <div className="flex flex-row gap-4 sm:flex-col">
-            {render.length > 0 && (
-                
-                <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
+                {render.length > 0 && (
                     
-                    {filtros.sobras ? 
-                        `Sobras totales  $${Number(msgTotales).toLocaleString("es-AR")}` 
-                        : 
-                        `Producción total $${Number(msgTotales).toLocaleString("es-AR")}`
-                    }
-                    
-                </div>
+                    <div className="bg-orange-600 w-[200px] rounded-full text-center text-white p-2 mt-4">
+                        
+                        {filtros.sobras ? 
+                            `Sobras totales  $${Number(msgTotales).toLocaleString("es-AR")}` 
+                            : 
+                            `Producción total $${Number(msgTotales).toLocaleString("es-AR")}`
+                        }
+                        
+                    </div>
                 )}
+
+
             </div>
 
             <div className="bg-white relative w-screen  md:w-[600px] p-1 rounded text-black m-5 overflow-hidden">
                 <div className=" flex justify-between items-center border-b-[4px] pt-2 border-orange-600 bg-orange-300 px-4 py-2 font-bold">
                 {deleteTick ? (
+                    <Fragment>
                         <RiDeleteBinLine color={'red'} size={30} onClick={deleteTickedItems}/>
+                        {miniLoader? (
+                        <PuffLoader color="#000000"  size={25} />
+                        ):null}
+                    </Fragment>
                     ) : ("")}
                     
                     <p className="w-1/4 text-center">Producto</p>
@@ -211,15 +218,12 @@ export default function ProduccionDiaria({ serverUrl,localName }) {
                         <div key={index} className={`flex justify-between items-center border border-gray-300 px-4 py-2 
                                 ${tick.some(t => t.nombre === item.nombre) ? `bg-red-400`:""}`}>
                                 {auxFecha.length === 10 ? (
-                                
+                                    
                                     <input type="checkbox" onChange={(e) => handleTick(e, item)} />
-                                
+                                    
                                 ) : null}
 
-                                {miniLoader? (
-                                    <PuffLoader color="#000000"  size={25} />
 
-                                ):null}
 
                             <p className="w-1/4 text-center">{item.nombre}</p>
                             <p className="w-1/4 text-center ">{item.cantidad.toLocaleString("es-AR")}</p>

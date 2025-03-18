@@ -174,7 +174,6 @@ sessionRouter.post('/:local/settings',async (req,res)=>{
         ,{new:true})
 
 
-        console.log(resData)
         res.status(200).json({message:"Configuracion actualizada", userSettings: resData.settings || null})
 
     } catch (error) {

@@ -63,8 +63,6 @@ export const findSearchedProducts = async(req,res)=>{
         ).collation({ locale: "es", strength: 1 })
 
         res.json(finder)    
-    console.log("Buscando:",searched)
-    console.log(finder)
 
         
     } catch (error) {

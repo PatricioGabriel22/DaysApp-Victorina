@@ -1,10 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useLocalContext } from "../context/localContext";
 
 
 
 
 export default function PrivateRoute(){
-    const isAuth = sessionStorage.getItem('auth') === 'true'
-
-    return isAuth ? <Outlet/> : <Navigate to="/login" />
+    const {loggedIn} = useLocalContext()
+    console.log(loggedIn)
+    return loggedIn ? <Outlet/> : <Navigate to="/login" />
 }

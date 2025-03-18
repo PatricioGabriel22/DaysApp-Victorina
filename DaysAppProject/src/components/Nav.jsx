@@ -48,7 +48,7 @@ export default function Nav(){
 
                         <span className="flex flex-col items-center">
                             <img src={bakeryIMG}  className="w-16 h-16"/>
-                            <p className=" text-pretty text-black text-lg">{localName}</p>
+                            <p className=" text-pretty text-black italic ">{localName}</p>
                         </span>
 
 
@@ -65,7 +65,7 @@ export default function Nav(){
                             <IoSettingsSharp size={50} />Ajustes
                         </Link>
 
-                        <Link to='/login' className="flex flex-grow gap-2 items-center  text-black hover:text-red-900 m-auto"
+                        <Link to='/login' className="flex flex-grow gap-2 items-center text-black hover:text-red-900 m-auto"
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>

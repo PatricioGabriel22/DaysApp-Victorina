@@ -5,7 +5,8 @@ import { useLocalContext } from "../context/localContext"
 
 import bakeryIMG from '/bakery.png'
 import { FaGithub } from "react-icons/fa6";
-import { PiChefHatLight } from "react-icons/pi";
+import { PiChefHatLight } from "react-icons/pi"
+import { RiErrorWarningLine } from "react-icons/ri"
 import axios from "axios"
 
 export default function LoginAndRegister(){
@@ -29,36 +30,39 @@ export default function LoginAndRegister(){
   }
 
 
-  function handleLogin(e){
-    e.preventDefault()
-    setIsLoading(true)
-
-    const logInInpoutData = {
-      username:e.target[0].value,
-      password:e.target[1].value,
+function handleLogin(e){
+  e.preventDefault()
   
+  const logInInpoutData = {
+    username:e.target[0].value,
+    password:e.target[1].value,
+    
+  }
+  
+  localLogin(serverUrl,logInInpoutData).then(res=>{
+    
+    if(res.status === 200){
+      console.log(res)
+      
+      setLoggedIn(true)
+      setIsLoading(false)
+      setLocalName(res.data.username)
+      setLocalSettings(res.data.userSettings)
+
+      sessionStorage.setItem('auth','true')
+      sessionStorage.setItem('username',res.data.username)
+      sessionStorage.setItem('ID',res.data.id)
+      sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
+  
+          
+      navigate('/')
     }
-
-      localLogin(serverUrl,logInInpoutData).then(res=>{
-   
-        if(res.status === 200){
-            setLocalSettings(res.data.userSettings)
-            console.log(res)
-            
-            setLoggedIn(false)
-            setLocalName(res.data.username)
-            sessionStorage.setItem('auth','true')
-            sessionStorage.setItem('username',res.data.username)
-            sessionStorage.setItem('ID',res.data.id)
-            sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
-
-    
-    
-            
-            navigate('/')
-        }
-       
-       }).catch(error=>console.log(error))   
+      
+  })
+  .catch(error=>{
+    console.log(error.response.data.message)
+    setErrorMsg(error.response.data.message)
+  })   
 
 
 } 
@@ -104,12 +108,12 @@ export default function LoginAndRegister(){
 
 }
 
-  setInterval(()=>{setErrorMsg('')},[3000])
+  setTimeout(()=>{setErrorMsg('')},[6000])
 
     
   return (
       <Fragment>
-        <div className="min-h-screen flex flex-col items-center justify-center pt-7 ">
+        <div className="min-h-screen flex flex-col items-center justify-center  ">
           <div className="absolute top-10 ">
             <h1 className="text-3xl pb-6">Bakery app</h1>
             <img src={bakeryIMG} className="w-36 "></img>
@@ -121,21 +125,26 @@ export default function LoginAndRegister(){
         
         <div className="flex flex-col items-center justify-center">
 
-            <form autoComplete="off" ref={formRef} className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col sm:mt-52 mt-9 gap-y-5" 
-              onSubmit={(e)=>handleRegister(e)}>
+          <form autoComplete="off" ref={formRef} className="w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col mt-32 gap-y-5 pb-12" 
+            onSubmit={(e)=>handleRegister(e)}>
+          
+            <input name="register-username" placeholder="username" type="text" className="text-black text-center rounded" />
+            <input name="register-password" placeholder="password" type="password" className="text-black text-center rounded" />
+            <input name="register-confirmedPassword" placeholder="confirmar password" type="password" className="text-black text-center rounded"/>
+            <input name="register-email" placeholder="email" type="text" className="text-black text-center rounded"  />
+  
+  
+            <button type="submit" className="bg-orange-600 p-2 rounded">Registrarse</button>
             
-              <input name="register-username" placeholder="username" type="text" className="text-black text-center rounded" />
-              <input name="register-password" placeholder="password" type="password" className="text-black text-center rounded" />
-              <input name="register-confirmedPassword" placeholder="confirmar password" type="password" className="text-black text-center rounded"/>
-              <input name="register-email" placeholder="email" type="text" className="text-black text-center rounded"  />
-    
-    
-              <button type="submit" className="bg-orange-600 p-2 rounded">Registrarse</button>
-              
 
-            </form>
-            <button type="submit" onClick={()=>blankFormsWhenSwitch()}>Login</button>
-            {errorMsg && <div className="text-red-600 self-center absolute bottom-40">{errorMsg}</div>}
+          </form>
+          {errorMsg && <div className="text-red-600 self-center flex flex-row items-center absolute bottom-52">
+                  
+                  <RiErrorWarningLine />
+                  <p>{errorMsg}</p>
+                </div>
+                }
+          <button type="submit" className=" pt-8" onClick={()=>blankFormsWhenSwitch() }>Login</button>
 
         </div>
         
@@ -143,25 +152,32 @@ export default function LoginAndRegister(){
             <div className="flex flex-col items-center justify-center">
 
 
-              <form  ref={formRef} className=" w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5 sm:mt-52 mt-14 " 
+              <form  ref={formRef} className="w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5  mt-28 pb-7" 
               onSubmit={(e)=>handleLogin(e)}>
     
-                <input placeholder="username" type="text" className="text-black text-center rounded" />
-                <input placeholder="password" type="password" className="text-black text-center rounded" />
+                <input placeholder="username" type="text" className="text-black text-center rounded"  required/>
+                <input placeholder="password" type="password" className="text-black text-center rounded"  required/>
     
                 <button type="submit" className="bg-orange-600 p-2 rounded">Login</button>
-                {succesMsg && <div className="text-emerald-500 w-full  text-center flex-grow flex flex-col justify-center items-center  ">
+                {succesMsg && <div className="text-emerald-500 w-full  text-center flex-grow flex flex-col justify-center items-center ">
                   <p>{succesMsg}</p>
                   <PiChefHatLight size={20}/>
-                  </div>}
+                  </div>
+                }
+
 
               </form>
+                {errorMsg && <div className="text-red-600 self-center flex flex-row items-center absolute bottom-72 z-10">
+                  
+                  <RiErrorWarningLine />
+                  <p>{errorMsg}</p>
+                </div>
+                }
               
-
-              <button className="pt-3" onClick={()=>blankFormsWhenSwitch()}>Registrarse</button>
-
-
-              <button className="pt-3">Cambiar contraseña</button>
+              <div className="flex flex-col pt-10">
+                <button className="pt-3" onClick={()=>blankFormsWhenSwitch()}>Registrarse</button>
+                <button className="pt-3">Cambiar contraseña</button>
+              </div>
              
 
             </div>
