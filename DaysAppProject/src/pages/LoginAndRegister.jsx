@@ -17,7 +17,7 @@ export default function LoginAndRegister(){
 
   const [toRegister,setToRegister] = useState(false)
   const [succesMsg,setSuccesMsg] = useState('')
-  const [errorMsg,setErrorMsg] = useState('')
+  const [errorMsg,setErrorMsg] = useState('error')
 
   const formRef = useRef(null)
 
@@ -108,24 +108,24 @@ function handleLogin(e){
 
 }
 
-  setTimeout(()=>{setErrorMsg('')},[6000])
+  // setTimeout(()=>{setErrorMsg('')},[6000])
 
     
   return (
       <Fragment>
-        <div className="min-h-screen flex flex-col items-center justify-center  ">
-          <div className="absolute top-10 ">
-            <h1 className="text-3xl pb-6">Bakery app</h1>
-            <img src={bakeryIMG} className="w-36 "></img>
-            
-
+        <div className="min-h-screen flex flex-col items-center justify-evenly  ">
+          
+          <div className="">
+            <h1 className="text-3xl ">Bakery app</h1>
+            <img src={bakeryIMG} className="w-36"></img>
           </div>
 
         {toRegister? (
         
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col justify-center">
 
-          <form autoComplete="off" ref={formRef} className="w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col mt-32 gap-y-5 pb-12" 
+          <form autoComplete="off" ref={formRef} 
+            className="w-80 border-4 rounded-3xl text-white border-orange-600  p-5 flex flex-col gap-y-5 pb-12 " 
             onSubmit={(e)=>handleRegister(e)}>
           
             <input name="register-username" placeholder="username" type="text" className="text-black text-center rounded" />
@@ -138,7 +138,7 @@ function handleLogin(e){
             
 
           </form>
-          {errorMsg && <div className="text-red-600 self-center flex flex-row items-center absolute bottom-52">
+          {errorMsg && <div className="text-red-600 self-center flex flex-row items-center ">
                   
                   <RiErrorWarningLine />
                   <p>{errorMsg}</p>
@@ -152,7 +152,7 @@ function handleLogin(e){
             <div className="flex flex-col items-center justify-center">
 
 
-              <form  ref={formRef} className="w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5  mt-28 pb-7" 
+              <form  ref={formRef} className="w-80 border-4 rounded-3xl text-white border-orange-600 p-5 flex flex-col gap-y-5  " 
               onSubmit={(e)=>handleLogin(e)}>
     
                 <input placeholder="username" type="text" className="text-black text-center rounded"  required/>
@@ -167,7 +167,7 @@ function handleLogin(e){
 
 
               </form>
-                {errorMsg && <div className="text-red-600 self-center flex flex-row items-center absolute bottom-72 z-10">
+                {errorMsg && <div className="text-red-600 self-center flex flex-row items-center ">
                   
                   <RiErrorWarningLine />
                   <p>{errorMsg}</p>
