@@ -128,6 +128,7 @@ sessionRouter.post('/login',async(req,res)=>{
         })
         .json({
             message:`Accedio como ${loginUserTarget.username}`,
+            token: token,
             username:loginUserTarget.username,
             id:loginUserTarget._id,
             userSettings: loginUserTarget.settings || null

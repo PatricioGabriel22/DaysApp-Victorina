@@ -39,7 +39,7 @@ function handleLogin(e){
     password:e.target[1].value,
     
   }
-  setMiniLoader(!miniLoader)
+  setMiniLoader(true)
   
   localLogin(serverUrl,logInInpoutData).then(res=>{
     if(res.status === 200){
@@ -50,7 +50,8 @@ function handleLogin(e){
       setLocalName(res.data.username)
       setLocalSettings(res.data.userSettings)
 
-      sessionStorage.setItem('auth','true')
+      sessionStorage.setItem('auth','true'),
+      sessionStorage.setItem('token',res.data.token),
       sessionStorage.setItem('username',res.data.username)
       sessionStorage.setItem('ID',res.data.id)
       sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
@@ -70,7 +71,7 @@ function handleLogin(e){
   
 
 } 
-  console.log(miniLoader)
+
 
   function handleRegister(e){
     e.preventDefault()

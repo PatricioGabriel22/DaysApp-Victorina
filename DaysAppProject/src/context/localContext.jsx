@@ -35,7 +35,7 @@ export function LocalProvider({children}){
     const [localSettings,setLocalSettings] = useState([])
 
 
-   const flagAuth = sessionStorage.getItem('auth')
+   const flagAuth = sessionStorage.getItem('token')
        
 
 

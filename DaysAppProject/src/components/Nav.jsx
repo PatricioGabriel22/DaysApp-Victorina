@@ -65,7 +65,7 @@ export default function Nav(){
                             <IoSettingsSharp size={50} />Ajustes
                         </Link>
 
-                        <Link to='/login' className="flex flex-grow gap-2 items-center text-black hover:text-red-900 m-auto"
+                        <Link to='/login' className="flex flex-grow gap-2 items-center text-black hover:text-red-900"
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>
