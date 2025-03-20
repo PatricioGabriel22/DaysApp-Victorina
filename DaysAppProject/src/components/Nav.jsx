@@ -42,16 +42,16 @@ export default function Nav(){
                 {menu ? (
                 <div className="fixed bg-orange-600 ">
 
-                    <div className="min-h-screen overflow-y-auto  flex flex-col justify-around items-center w-full">
+                    <div className="min-h-screen overflow-y-auto  flex flex-col justify-evenly items-center w-full">
 
-                        <RxCross1 size={20} className=" absolute top-4" onClick={()=>(setMenu(!menu))}/>
+                        <RxCross1 size={20} className="absolute top-4 " onClick={()=>(setMenu(!menu))}/>
 
-                        <span className="flex flex-col items-center mt-8">
+                        <span className="flex flex-col w-full items-center mt-6">
                             <img src={bakeryIMG}  className="w-16 h-16"/>
                             <p className=" text-pretty text-black italic ">{localName}</p>
+                         <div className="w-full bg-gray-800 h-[1px]"/>
                         </span>
 
-                        <div className="w-full bg-gray-800 h-[1px]"/>
 
                         <Link to="/" className=" flex  w-full items-center p-4 hover:bg-black mt-7" onClick={()=>(setMenu(!menu))}>
                             <CiClock1 size={50}/>Control de dias
@@ -66,7 +66,7 @@ export default function Nav(){
                             <IoSettingsSharp size={50} />Ajustes
                         </Link>
 
-                        <Link to='/login' className="flex gap-2 items-center text-black hover:text-red-900"
+                        <Link to='/login' className="flex gap-2 items-center text-black hover:text-red-900 "
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>
