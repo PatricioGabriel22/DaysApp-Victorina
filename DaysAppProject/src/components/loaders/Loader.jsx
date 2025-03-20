@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { ClockLoader } from "react-spinners"
-import { randomUtils } from "../functions/random.js";
+import { randomUtils } from "../../functions/random.js";
 
 
 
@@ -12,9 +12,9 @@ import { randomUtils } from "../functions/random.js";
 
 
 
+const loadingMsgs = ["Prendiendo el horno","Abriendo el local","Despertando a los panaderos","Armando las mesas", "Reponiendo el pan", "Pintando las facturas", "Poniendo agua a la cafetera"]
 
 export default function Loader(){
-    const loadingMsgs = ["Ostia che","Abriendo el local","Despertando a los panaderos","Armando las mesas", "Reponiendo el pan", "Pintando las facturas", "Poniendo agua a la cafetera"]
     return(
         <Fragment>
 

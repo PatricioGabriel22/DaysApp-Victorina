@@ -1,8 +1,14 @@
 import { Fragment, useEffect, useState } from "react";
+
 import PropTypes from "prop-types";
+
 import { FaPlus } from "react-icons/fa";
+import { RiDeleteBinLine } from "react-icons/ri";
+
+
 import axios from "axios";
 import { useLocalContext } from "../../context/localContext";
+
 
 
 
@@ -12,19 +18,6 @@ export default function FormIgnore(){
     const {localName,serverUrl} = useLocalContext()
     const [add,setAdd] = useState([])
     
-    
-    useEffect(() => {
-        const storedConfig = JSON.parse(sessionStorage.getItem("config")) 
-        console.log(storedConfig)
-        const isEmpty = Object.keys(storedConfig).length === 0
-
-
-        if(!isEmpty){
-
-            setAdd([...storedConfig.ignoredProducts]);
-        }
-    }, []);
-
 
 
 
@@ -59,6 +52,30 @@ export default function FormIgnore(){
         setAdd(newAddedItem)
     }
     
+    function deleteConfig(target){
+        setAdd(prev => {
+            const newArray = [...prev]
+            newArray.splice(target,1)
+            return newArray
+        })
+      
+    }
+
+        
+    useEffect(() => {
+        const storedConfig = JSON.parse(sessionStorage.getItem("config")) 
+       
+        const isEmpty = Object.keys(storedConfig).length === 0
+
+
+        if(!isEmpty){
+
+            setAdd([...storedConfig["ignoredProducts"]])
+        }
+
+        
+
+    }, []);
 
     return(
         <Fragment>
@@ -80,15 +97,17 @@ export default function FormIgnore(){
 
                 {
                     add.map((plusItem,index)=>(
-                        <input 
-                        key={index}
-                        type="text" 
-                        id={`nombreProducto ${index}`}
-                        placeholder={"Ocultar de la lista"}
-                        value={plusItem|| ""} 
-                        onChange={(e)=>hadleInputChange(e,index)}
-                        
-                    className=" border-gray-300 rounded p-2 w-full"/>
+                        <div key={index} className="flex flex-row items-center gap-2">
+
+                            <RiDeleteBinLine color="red" size={30} onClick={()=>deleteConfig(index)}/>
+                            <input 
+                            type="text" 
+                            id={`nombreProducto ${index}`}
+                            placeholder={"Ocultar de la lista"}
+                            value={plusItem|| ""} 
+                            onChange={(e)=>hadleInputChange(e,index)}
+                            className=" border-gray-300 rounded p-2 w-full"/>
+                        </div>
                     ))
                 }
 

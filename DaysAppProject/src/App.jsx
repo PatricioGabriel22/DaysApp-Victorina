@@ -6,7 +6,7 @@ import { useLocalContext } from "./context/localContext.jsx";
 import DaysAppMainPage from "./pages/DaysAppMainPage.jsx";
 import ProduccionDiaria from "./pages/ProduccionDiaria.jsx";
 import Nav from "./components/Nav.jsx";
-import Loader from './components/Loader.jsx'
+import Loader from './components/loaders/Loader.jsx'
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import LoginAndRegister from "./pages/LoginAndRegister.jsx";
 
@@ -25,7 +25,7 @@ function App(){
 
 
 
-  const {isLoading,serverUrl,localName,setLocalName, loggedIn} = useLocalContext()
+  const {isLoading,serverUrl,localName,setLocalName} = useLocalContext()
   const [flagUpdate, setFlagUpdate] = useState(false)
 
   

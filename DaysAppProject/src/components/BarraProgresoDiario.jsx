@@ -8,11 +8,15 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { RiEditLine } from "react-icons/ri";
 
 import Swal from 'sweetalert2'
+import { PuffLoader } from "react-spinners";
 
 export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdate,serverUrl}){
 
   const [color,setColor] = useState('green')
   
+  const [flagRevisar,setFlagRevisar] = useState(false)
+  const [flagPlus,setFlagPlus] = useState(false)
+
 
    
 
@@ -20,7 +24,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
 
   const updateDay = useCallback(async ()=>{
 
-    
+    setFlagPlus(true)
     await axios.put(`${serverUrl}/sumarDia`,{
       "productName":allDataCopy.productName,
       "fechaInicio":allDataCopy.fechaInicio,
@@ -29,6 +33,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
       },{withCredentials:true}).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
+      setFlagPlus(false)
 
         
 
@@ -40,6 +45,8 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
 
   const revisarProducto = useCallback(async ()=>{
 
+    setFlagRevisar(true)
+
     await axios.put(`${serverUrl}/revisado`,{
       "productName":allDataCopy.productName,
       "fechaInicio":allDataCopy.fechaInicio,
@@ -48,7 +55,7 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
       },{withCredentials:true}).then(res=>{
       console.log(res)
       setFlagUpdate((prev) => !prev)
-
+      setFlagRevisar(false)  
       }).catch(e=>console.log(e))
       
   },[allDataCopy,setFlagUpdate,serverUrl])
@@ -206,13 +213,15 @@ export default function BarraProgresoDiario({allDataCopy,flagUpdate,setFlagUpdat
                 <RiDeleteBinLine size={50} className=" text-red-500" onClick={deleteProduct}/>
                 
                 <RiEditLine  size={50} className="text-sky-500 " onClick={editProduct}/>
-                <button className="bg-white text-black rounded-full w-20" onClick={aumentarDia}>+1 dia</button>
+                <button className="bg-white text-black rounded-full flex flex-row items-center justify-center w-20" 
+                onClick={aumentarDia}>{flagPlus? <PuffLoader size={25} /> : "+1 dia"}</button>
                 
 
                 {
                   (!allDataCopy.revisado) ? (
                   
-                    <button className=" bg-purple-600 text-black rounded-full  text-center w-20" onClick={revisarProducto}>Revisado</button>
+                    <button className=" bg-purple-600 text-black rounded-full flex flex-row items-center justify-center w-20" 
+                    onClick={revisarProducto}>{flagRevisar? <PuffLoader size={25} /> : "Revisar"}</button>
                 
                       
                   ) :""

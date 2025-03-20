@@ -37,20 +37,21 @@ export default function Nav(){
     
     return(
         <Fragment>
-            <nav className="self-start absolute flex flex-col z-50">
+            <nav className="self-start absolute flex flex-col  z-50">
 
                 {menu ? (
-                <div className="h-screen fixed bg-orange-600 ">
+                <div className="fixed bg-orange-600 ">
 
-                    <div className="flex flex-col justify-between items-center flex-grow w-full gap-10">
+                    <div className="min-h-screen overflow-y-auto  flex flex-col justify-around items-center w-full">
 
-                        <RxCross1 size={20} className="mt-8 w-full" onClick={()=>(setMenu(!menu))}/>
+                        <RxCross1 size={20} className=" absolute top-4" onClick={()=>(setMenu(!menu))}/>
 
-                        <span className="flex flex-col items-center">
+                        <span className="flex flex-col items-center mt-20">
                             <img src={bakeryIMG}  className="w-16 h-16"/>
                             <p className=" text-pretty text-black italic ">{localName}</p>
                         </span>
 
+                        <div className="w-full bg-gray-800 h-[1px]"/>
 
                         <Link to="/" className=" flex  w-full items-center p-4 hover:bg-black mt-7" onClick={()=>(setMenu(!menu))}>
                             <CiClock1 size={50}/>Control de dias
@@ -65,14 +66,14 @@ export default function Nav(){
                             <IoSettingsSharp size={50} />Ajustes
                         </Link>
 
-                        <Link to='/login' className="flex flex-grow gap-2 items-center text-black hover:text-red-900"
+                        <Link to='/login' className="flex gap-2 items-center text-black hover:text-red-900 mt-auto "
                             onClick={()=>handleLogout()}>
                             <TbLogout2 size={20}/> Logout
                         </Link>
 
                     </div>
                 </div>):
-                    (<AiOutlineMenu size={50}  className="m-4" onClick={()=>(setMenu(!menu))}/>)}
+                    (<AiOutlineMenu size={50}  className="m-4 fixed" onClick={()=>(setMenu(!menu))}/>)}
 
             </nav>
         </Fragment>

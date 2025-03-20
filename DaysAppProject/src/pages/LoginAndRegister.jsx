@@ -39,14 +39,15 @@ function handleLogin(e){
     password:e.target[1].value,
     
   }
-  setMiniLoader(true)
   
+  setMiniLoader(true)
+  console.log(miniLoader)
   localLogin(serverUrl,logInInpoutData).then(res=>{
     if(res.status === 200){
       console.log(res)
-      
+
       setLoggedIn(true)
-      setIsLoading(false)
+      setIsLoading(true)
       setLocalName(res.data.username)
       setLocalSettings(res.data.userSettings)
 
@@ -65,15 +66,16 @@ function handleLogin(e){
     console.log(error.response.data.message)
     setErrorMsg(error.response.data.message)
   })
+  .finally(()=>setMiniLoader(false))
   
-  setMiniLoader(false)
+  
   
   
 
 } 
 
 
-  function handleRegister(e){
+function handleRegister(e){
     e.preventDefault()
     console.log(e)  
 
@@ -163,7 +165,7 @@ function handleLogin(e){
                 <input placeholder="username" type="text" className="text-black text-center rounded"  required/>
                 <input placeholder="password" type="password" className="text-black text-center rounded"  required/>
     
-                <button type="submit" className="bg-orange-600 p-2 rounded">Login</button>
+                <button type="submit" className="bg-orange-600 p-2 rounded" >Login</button>
                 {succesMsg && <div className="text-emerald-500 w-full  text-center flex-grow flex flex-col justify-center items-center ">
                   <p>{succesMsg}</p>
                   <PiChefHatLight size={20}/>

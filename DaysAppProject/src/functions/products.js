@@ -2111,7 +2111,6 @@ export const ListaProductos =  [
   'Culitos',
   'Sacramentos',
   'Negritas',
-  'Fiagasas chicas',
   'Scones pasas uva',
   'Budines chips',
   'Budin naranja',

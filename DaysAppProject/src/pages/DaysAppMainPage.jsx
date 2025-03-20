@@ -53,9 +53,10 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
 
   const [filterProducts, setFilterProducts] = useState({
     porRevisar:false,
-    porFecha:false
+    porFecha:false,
   })
 
+  const  [localConfig,setLocalConfig] = useState()
 
   // isLoading ? console.log("buscando data") : console.log("operacion terminada")
 
@@ -63,6 +64,7 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
 
     try {
       //Cargo el array original y creo una copia para realizar busqueda y no alterar el original
+      setLocalConfig(JSON.parse(sessionStorage.getItem('config')))
       setAllDataCopy(allData)
 
 
@@ -121,7 +123,7 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
 
   },1000)
 
-
+  
 
   return (
     <Fragment>
@@ -221,7 +223,8 @@ export default function DaysAppMainPage({allData,flagUpdate,setFlagUpdate,server
         {allDataCopy
         .filter(item=>!filterProducts.porRevisar || !item.revisado)
         .filter(item=>!filterProducts.porFecha || item.fechaInicio === filterProducts.porFecha)
-
+        //me fijo que incluya en la lista de producto ignoradps y lo niego
+        .filter(item=>!localConfig["ignoredProducts"].includes(item.productName))
 
         .map((item,index)=>{return(
 
