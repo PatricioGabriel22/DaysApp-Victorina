@@ -35,6 +35,7 @@ export function LocalProvider({children}){
     const [localSettings,setLocalSettings] = useState([])
 
 
+   const flagAuth = sessionStorage.getItem('auth')
        
 
 
@@ -59,7 +60,9 @@ export function LocalProvider({children}){
             setLocalSettings,
             
             miniLoader,
-            setMiniLoader
+            setMiniLoader, 
+
+            flagAuth
             
         }
             }>

@@ -83,11 +83,10 @@ function App(){
 
   return(
     <div className='bg-black min-h-screen min-w-screen  text-white flex flex-col items-center '>
-      
-   
+    
       <BrowserRouter>
         
-        {loggedIn || localName? 
+        {localName? 
           <Nav 
             serverUrl={serverUrl} 
             localName={localName} 

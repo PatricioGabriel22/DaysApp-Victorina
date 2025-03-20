@@ -8,12 +8,13 @@ import { FaGithub } from "react-icons/fa6";
 import { PiChefHatLight } from "react-icons/pi"
 import { RiErrorWarningLine } from "react-icons/ri"
 import axios from "axios"
+import { PuffLoader } from "react-spinners"
 
 export default function LoginAndRegister(){
 
 
   const navigate = useNavigate()
-  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading,setLocalSettings} = useLocalContext()
+  const {localLogin,serverUrl,setLocalName,setLoggedIn,setIsLoading,setLocalSettings, miniLoader, setMiniLoader} = useLocalContext()
 
   const [toRegister,setToRegister] = useState(false)
   const [succesMsg,setSuccesMsg] = useState('')
@@ -27,7 +28,7 @@ export default function LoginAndRegister(){
   function blankFormsWhenSwitch(){
     setToRegister(!toRegister)
     formRef.current?.reset()
-  }
+}
 
 
 function handleLogin(e){
@@ -38,9 +39,9 @@ function handleLogin(e){
     password:e.target[1].value,
     
   }
+  setMiniLoader(!miniLoader)
   
   localLogin(serverUrl,logInInpoutData).then(res=>{
-    
     if(res.status === 200){
       console.log(res)
       
@@ -54,19 +55,22 @@ function handleLogin(e){
       sessionStorage.setItem('ID',res.data.id)
       sessionStorage.setItem('config',JSON.stringify(res.data?.userSettings))
   
-          
+      
       navigate('/')
     }
-      
+    
   })
   .catch(error=>{
     console.log(error.response.data.message)
     setErrorMsg(error.response.data.message)
-  })   
-
+  })
+  
+  setMiniLoader(false)
+  
+  
 
 } 
-  
+  console.log(miniLoader)
 
   function handleRegister(e){
     e.preventDefault()
@@ -167,14 +171,17 @@ function handleLogin(e){
 
 
               </form>
-                {errorMsg && <div className="text-red-600 self-center flex flex-row items-center ">
+
+                {miniLoader && <PuffLoader color="#e36315" size={25} />}
+                <div className={`text-red-600 self-center  ${!errorMsg? 'hidden' : "flex flex-row items-center"}`}>
                   
                   <RiErrorWarningLine />
                   <p>{errorMsg}</p>
+                  
                 </div>
-                }
+                
               
-              <div className="flex flex-col pt-10">
+              <div className='flex flex-col pt-10>'>
                 <button className="pt-3" onClick={()=>blankFormsWhenSwitch()}>Registrarse</button>
                 <button className="pt-3">Cambiar contraseña</button>
               </div>

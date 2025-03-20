@@ -5,7 +5,7 @@ import { useLocalContext } from "../context/localContext";
 
 
 export default function PrivateRoute(){
-    const {loggedIn} = useLocalContext()
-    console.log(loggedIn)
-    return loggedIn ? <Outlet/> : <Navigate to="/login" />
+   const {flagAuth} = useLocalContext() 
+   console.log(flagAuth)
+    return flagAuth ? <Outlet/> : <Navigate to="/login" />
 }
