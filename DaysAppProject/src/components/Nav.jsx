@@ -46,7 +46,7 @@ export default function Nav(){
 
                         <RxCross1 size={20} className=" absolute top-4" onClick={()=>(setMenu(!menu))}/>
 
-                        <span className="flex flex-col items-center mt-20">
+                        <span className="flex flex-col items-center mt-8">
                             <img src={bakeryIMG}  className="w-16 h-16"/>
                             <p className=" text-pretty text-black italic ">{localName}</p>
                         </span>
