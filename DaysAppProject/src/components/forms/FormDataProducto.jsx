@@ -39,7 +39,7 @@ export default function FormDataProducto({productData}){
         
         
        const collectedData = {
-        "productName":nombreDelProducto.toLowerCase(),
+        "productName":nombreDelProducto.toLowerCase().trim(),
         "fechaInicio":`${dia}/${mes}/${anio}`,
         "cantidad":e.target[3].value,
         "unidades":e.target[4].value,
@@ -95,7 +95,7 @@ export default function FormDataProducto({productData}){
 
                     <label htmlFor='cantidad' ></label>
                     <input 
-                        type="text" 
+                        type="number" 
                         id="cantidad" 
                     className="text-center w-1/3"/>
 

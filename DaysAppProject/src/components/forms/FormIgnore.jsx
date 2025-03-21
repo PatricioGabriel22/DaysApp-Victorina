@@ -28,7 +28,7 @@ export default function FormIgnore(){
         const ignoredProductsPayload = []
 
         for(let i = 0; i<add.length; i++){
-            ignoredProductsPayload.push(e.target[i].value.toLowerCase())
+            ignoredProductsPayload.push(e.target[i].value.toLowerCase().trim())
         }
 
         console.log(ignoredProductsPayload)
