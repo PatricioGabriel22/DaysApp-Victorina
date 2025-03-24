@@ -97,10 +97,12 @@ export default function FormDataProducto({productData}){
                     <input 
                         type="number" 
                         id="cantidad" 
-                    className="text-center w-1/3"/>
+                        className="text-center w-1/3 "
+                        step={0.001}
+                    />
 
 
-                    <select className="w-2/3" id="unidades" >
+                    <select id="unidades" >
                     
                         <option value="bagueteras">Bagueteras</option>
                         <option value="latas">Latas</option>
