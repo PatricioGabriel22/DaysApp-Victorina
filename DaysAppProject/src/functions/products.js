@@ -2153,6 +2153,7 @@ export const ListaProductos =  [
   'Empanadas cebolla',
   'Coquitos',
   'Avena naranja',
+  'Budin ingles',
   'Pan arabe negro',
   'Empanadas arabe',
   'Bizcochitos jamon y queso',
