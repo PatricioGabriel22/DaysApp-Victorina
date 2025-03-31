@@ -31,7 +31,7 @@ export default function LoginAndRegister(){
 }
 
 
-function handleLogin(e){
+async function handleLogin(e){
   e.preventDefault()
   
   const logInInpoutData = {
@@ -42,7 +42,7 @@ function handleLogin(e){
   
   setMiniLoader(true)
   console.log(miniLoader)
-  localLogin(serverUrl,logInInpoutData).then(res=>{
+  await localLogin(serverUrl,logInInpoutData).then(res=>{
     if(res.status === 200){
       console.log(res)
 
