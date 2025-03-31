@@ -33,7 +33,7 @@ export default function LoginAndRegister(){
 
 async function handleLogin(e){
   e.preventDefault()
-  
+  console.log(serverUrl)
   const logInInpoutData = {
     username:e.target[0].value,
     password:e.target[1].value,
